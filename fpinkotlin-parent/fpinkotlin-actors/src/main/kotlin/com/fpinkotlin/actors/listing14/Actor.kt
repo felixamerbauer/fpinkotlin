@@ -1,9 +1,7 @@
 package com.fpinkotlin.actors.listing14
 
 import com.fpinkotlin.common.Result
-import kotlinx.coroutines.experimental.ThreadPoolDispatcher
-import kotlinx.coroutines.experimental.launch
-import kotlinx.coroutines.experimental.newSingleThreadContext
+import kotlinx.coroutines.newSingleThreadContext
 
 
 interface ActorContext<T> {
@@ -55,7 +53,7 @@ abstract class AbstractActor<T>(protected val id: String) : Actor<T> {
         override fun behavior() = behavior
     }
 
-    private val dispatcher: ThreadPoolDispatcher = newSingleThreadContext("MyOwnThread")
+    private val dispatcher = newSingleThreadContext("MyOwnThread")
 
     abstract fun onReceive(message: T, sender: Result<Actor<T>>)
 
@@ -69,8 +67,9 @@ abstract class AbstractActor<T>(protected val id: String) : Actor<T> {
 
     @Synchronized
     override fun tell(message: T, sender: Result<Actor<T>>) {
-        launch(dispatcher) {
-            actorContext.behavior().process(message, sender)
-        }
+        // TODO fixme
+//        launch(dispatcher) {
+//            actorContext.behavior().process(message, sender)
+//        }
     }
 }
