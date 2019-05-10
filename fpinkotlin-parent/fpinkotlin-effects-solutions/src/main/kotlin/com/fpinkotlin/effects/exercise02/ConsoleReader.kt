@@ -5,7 +5,7 @@ import com.fpinkotlin.common.Result
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
-class ConsoleReader(reader: BufferedReader): AbstractReader(reader) {
+class ConsoleReader(reader: BufferedReader) : AbstractReader(reader) {
 
     override fun readString(message: String): Result<Pair<String, Input>> {
         print("$message ")
@@ -19,7 +19,7 @@ class ConsoleReader(reader: BufferedReader): AbstractReader(reader) {
 
     companion object {
         operator fun invoke(): ConsoleReader =
-            ConsoleReader(BufferedReader(InputStreamReader(System.`in`)))
+                ConsoleReader(BufferedReader(InputStreamReader(System.`in`)))
 
     }
 }

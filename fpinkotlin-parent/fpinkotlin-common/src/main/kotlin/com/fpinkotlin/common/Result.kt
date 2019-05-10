@@ -3,7 +3,7 @@ package com.fpinkotlin.common
 import java.io.Serializable
 
 
-sealed class Result<out A>: Serializable {
+sealed class Result<out A> : Serializable {
 
     abstract fun mapEmpty(): Result<Any>
 
@@ -57,7 +57,7 @@ sealed class Result<out A>: Serializable {
                          onFailure: (RuntimeException) -> Unit = {},
                          onEmpty: () -> Unit = {})
 
-    internal object Empty: Result<Nothing>() {
+    internal object Empty : Result<Nothing>() {
 
         override fun mapEmpty(): Result<Any> = Result(Any())
 
@@ -78,7 +78,7 @@ sealed class Result<out A>: Serializable {
         override fun toString(): String = "Empty"
     }
 
-    internal class Failure<out A>(internal val exception: RuntimeException): Result<A>() {
+    internal class Failure<out A>(internal val exception: RuntimeException) : Result<A>() {
 
         override fun mapEmpty(): Result<Any> = failure(this.exception)
 
@@ -91,18 +91,18 @@ sealed class Result<out A>: Serializable {
         }
 
         override fun <B> map(f: (A) -> B): Result<B> = Failure(
-            exception)
+                exception)
 
         override fun <B> flatMap(f: (A) -> Result<B>): Result<B> = Failure(
-            exception)
+                exception)
 
         override fun mapFailure(message: String): Result<A> = Failure(
-            RuntimeException(message, exception))
+                RuntimeException(message, exception))
 
         override fun toString(): String = "Failure(${exception.message})"
     }
 
-    internal class Success<out A>(internal val value: A): Result<A>() {
+    internal class Success<out A>(internal val value: A) : Result<A>() {
 
         override fun mapEmpty(): Result<Nothing> = failure("Not empty")
 
@@ -145,13 +145,13 @@ sealed class Result<out A>: Serializable {
         operator fun <A> invoke(): Result<A> = Empty
 
         fun <A> failure(message: String): Result<A> = Failure(
-            IllegalStateException(message))
+                IllegalStateException(message))
 
         fun <A> failure(exception: RuntimeException): Result<A> = Failure(
-            exception)
+                exception)
 
         fun <A> failure(exception: Exception): Result<A> = Failure(
-            IllegalStateException(exception))
+                IllegalStateException(exception))
 
         operator fun <A> invoke(a: A? = null, message: String): Result<A> = when (a) {
             null -> Failure(NullPointerException(message))
@@ -176,45 +176,45 @@ sealed class Result<out A>: Serializable {
         }
 
         fun <A> of(f: () -> A): Result<A> =
-            try {
-                Result(f())
-            } catch (e: RuntimeException) {
-                Result.failure(e)
-            } catch (e: Exception) {
-                Result.failure(e)
-            }
+                try {
+                    Result(f())
+                } catch (e: RuntimeException) {
+                    Result.failure(e)
+                } catch (e: Exception) {
+                    Result.failure(e)
+                }
 
         fun <T> of(predicate: (T) -> Boolean,
                    value: T,
                    message: String): Result<T> =
-             try {
-                if (predicate(value))
-                    Result(value)
-                else
-                    Result.failure("Assertion failed for value $value with message: $message")
-            } catch (e: Exception) {
-                Result.failure(IllegalStateException("Exception while validating $value", e))
-            }
+                try {
+                    if (predicate(value))
+                        Result(value)
+                    else
+                        Result.failure("Assertion failed for value $value with message: $message")
+                } catch (e: Exception) {
+                    Result.failure(IllegalStateException("Exception while validating $value", e))
+                }
     }
 }
 
 fun <A, B> lift1(f: (A) -> B): (Result<A>) -> Result<B> = { it.map(f) }
 
 fun <A, B, C> lift2(f: (A) -> (B) -> C): (Result<A>) -> (Result<B>) -> Result<C> =
-    { a ->
-        { b ->
-            a.map(f).flatMap { b.map(it) }
-        }
-    }
-
-fun <A, B, C, D> lift3(f: (A) -> (B) -> (C) -> D): (Result<A>) -> (Result<B>) -> (Result<C>) -> Result<D> =
-    { a ->
-        { b ->
-            { c ->
-                a.map(f).flatMap { b.map(it) }.flatMap { c.map(it) }
+        { a ->
+            { b ->
+                a.map(f).flatMap { b.map(it) }
             }
         }
-    }
+
+fun <A, B, C, D> lift3(f: (A) -> (B) -> (C) -> D): (Result<A>) -> (Result<B>) -> (Result<C>) -> Result<D> =
+        { a ->
+            { b ->
+                { c ->
+                    a.map(f).flatMap { b.map(it) }.flatMap { c.map(it) }
+                }
+            }
+        }
 
 fun <A, B, C> map2(a: Result<A>,
                    b: Result<B>,

@@ -70,7 +70,7 @@ sealed class Stream<out A> {
 
     fun dropAtMost(n: Int): Stream<A> = dropAtMost(n, this)
 
-    private object Empty: Stream<Nothing>() {
+    private object Empty : Stream<Nothing>() {
 
         override fun <B> foldRight(z: Lazy<B>, f: (Nothing) -> (Lazy<B>) -> B): B = z()
 
@@ -86,8 +86,8 @@ sealed class Stream<out A> {
 
     }
 
-    private class Cons<out A> (internal val hd: Lazy<A>,
-                               internal val tl: Lazy<Stream<A>>) : Stream<A>() {
+    private class Cons<out A>(internal val hd: Lazy<A>,
+                              internal val tl: Lazy<Stream<A>>) : Stream<A>() {
 
         override fun <B> foldRight(z: Lazy<B>, f: (A) -> (Lazy<B>) -> B): B =
                 f(hd())(Lazy { tl().foldRight(z, f) })
@@ -126,7 +126,7 @@ sealed class Stream<out A> {
             }
         }
 
-        tailrec fun <A> dropAtMost(n: Int, stream: Stream<A>): Stream<A> =  when {
+        tailrec fun <A> dropAtMost(n: Int, stream: Stream<A>): Stream<A> = when {
             n > 0 -> when (stream) {
                 Empty -> stream
                 is Cons -> dropAtMost(n - 1, stream.tl())
@@ -134,8 +134,8 @@ sealed class Stream<out A> {
             else -> stream
         }
 
-        fun <A> toList(stream: Stream<A>) : List<A> {
-            tailrec fun <A> toList(list: List<A>, stream: Stream<A>) : List<A> = when (stream) {
+        fun <A> toList(stream: Stream<A>): List<A> {
+            tailrec fun <A> toList(list: List<A>, stream: Stream<A>): List<A> = when (stream) {
                 Empty -> list
                 is Cons -> toList(list.cons(stream.hd()), stream.tl())
             }
@@ -149,9 +149,9 @@ sealed class Stream<out A> {
         tailrec fun <A> exists(stream: Stream<A>, p: (A) -> Boolean): Boolean =
                 when (stream) {
                     Empty -> false
-                    is Cons  -> when {
+                    is Cons -> when {
                         p(stream.hd()) -> true
-                        else           -> exists(stream.tl(), p)
+                        else -> exists(stream.tl(), p)
                     }
                 }
 

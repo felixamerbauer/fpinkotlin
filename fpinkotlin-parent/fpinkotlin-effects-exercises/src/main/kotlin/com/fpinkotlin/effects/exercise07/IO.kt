@@ -5,11 +5,11 @@ class IO<out A>(private val f: () -> A) {
 
     operator fun invoke() = f()
 
-    fun <B> map (g: (A) -> B): IO<B> = IO {
+    fun <B> map(g: (A) -> B): IO<B> = IO {
         g(this())
     }
 
-    fun <B> flatMap (g: (A) -> IO<B>): IO<B> = TODO("flatMap")
+    fun <B> flatMap(g: (A) -> IO<B>): IO<B> = TODO("flatMap")
 
     companion object {
 

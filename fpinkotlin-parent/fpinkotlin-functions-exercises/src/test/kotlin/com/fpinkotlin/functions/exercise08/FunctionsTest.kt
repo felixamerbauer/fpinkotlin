@@ -3,7 +3,7 @@ package com.fpinkotlin.functions.exercise08
 
 import io.kotlintest.specs.StringSpec
 
-class FunctionsTest: StringSpec() {
+class FunctionsTest : StringSpec() {
 
     private val f = { a: Int -> { b: Double -> a * (1 + b / 100) } }
 

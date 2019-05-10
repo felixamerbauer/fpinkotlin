@@ -7,15 +7,15 @@ import io.kotlintest.properties.forAll
 import io.kotlintest.specs.StringSpec
 import java.util.*
 
-class ListTest: StringSpec() {
+class ListTest : StringSpec() {
 
     init {
 
         "sequence" {
             forAll(DoubleListGenerator()) { list ->
                 val errorMessage = "div by 0"
-                val f = { x: Double ->  if (x != 0.0) 1 / x else throw IllegalArgumentException(errorMessage) }
-                val result = sequence(list.map { Result.of{ f(it) } })
+                val f = { x: Double -> if (x != 0.0) 1 / x else throw IllegalArgumentException(errorMessage) }
+                val result = sequence(list.map { Result.of { f(it) } })
                 result.toString() == if (product(list) == 0.0)
                     Result.failure<Double>(errorMessage).toString()
                 else Result(list.map(f)).toString()
@@ -25,8 +25,8 @@ class ListTest: StringSpec() {
         "sequenceLeft" {
             forAll(DoubleListGenerator()) { list ->
                 val errorMessage = "div by 0"
-                val f = { x: Double ->  if (x != 0.0) 1 / x else throw IllegalArgumentException(errorMessage) }
-                val result = sequenceLeft(list.map { Result.of{ f(it) } })
+                val f = { x: Double -> if (x != 0.0) 1 / x else throw IllegalArgumentException(errorMessage) }
+                val result = sequenceLeft(list.map { Result.of { f(it) } })
                 result.toString() == if (product(list) == 0.0)
                     Result.failure<Double>(errorMessage).toString()
                 else Result(list.map(f)).toString()
@@ -35,7 +35,7 @@ class ListTest: StringSpec() {
     }
 }
 
-class DoubleListGenerator(val min: Double = Double.MIN_VALUE, val max: Double = Double.MAX_VALUE): Gen<List<Double>> {
+class DoubleListGenerator(val min: Double = Double.MIN_VALUE, val max: Double = Double.MAX_VALUE) : Gen<List<Double>> {
 
     private fun choose(): Gen<Double> {
         assert(min < max) { "min must be < max" }
@@ -45,7 +45,7 @@ class DoubleListGenerator(val min: Double = Double.MIN_VALUE, val max: Double = 
             override fun constants(): Iterable<Double> = emptyList()
 
             override fun random(): Sequence<Double> =
-                generateSequence { random.nextDouble() }.filter { it in min..max }
+                    generateSequence { random.nextDouble() }.filter { it in min..max }
         }
     }
 

@@ -3,7 +3,7 @@ package com.fpinkotlin.handlingerrors.exercise10
 import java.io.Serializable
 
 
-sealed class Result<out A>: Serializable {
+sealed class Result<out A> : Serializable {
 
     abstract fun <B> map(f: (A) -> B): Result<B>
 
@@ -55,7 +55,7 @@ sealed class Result<out A>: Serializable {
                 }
             }
 
-    internal object Empty: Result<Nothing>() {
+    internal object Empty : Result<Nothing>() {
 
         override fun forEachOrElse(onSuccess: (Nothing) -> Unit,
                                    onFailure: (RuntimeException) -> Unit,
@@ -72,7 +72,7 @@ sealed class Result<out A>: Serializable {
         override fun toString(): String = "Empty"
     }
 
-    internal class Failure<out A>(private val exception: RuntimeException): Result<A>() {
+    internal class Failure<out A>(private val exception: RuntimeException) : Result<A>() {
 
         override fun forEachOrElse(onSuccess: (A) -> Unit,
                                    onFailure: (RuntimeException) -> Unit,

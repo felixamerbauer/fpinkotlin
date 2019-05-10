@@ -5,7 +5,7 @@ import com.fpinkotlin.common.Result
 import kotlin.math.max
 
 
-sealed class Tree<out A: Comparable<@UnsafeVariance A>> {
+sealed class Tree<out A : Comparable<@UnsafeVariance A>> {
 
     abstract val size: Int
 
@@ -46,39 +46,39 @@ sealed class Tree<out A: Comparable<@UnsafeVariance A>> {
         is T -> when {
             a < this.value -> T(left + a, this.value, right)
             a > this.value -> T(left, this.value, right + a)
-            else           -> T(this.left, a, this.right)
+            else -> T(this.left, a, this.right)
         }
     }
 
-    fun <B: Comparable<B>> map(f: (A) -> B): Tree<B> =
-        foldInOrder(Empty) { t1: Tree<B> ->
-            { i: A ->
-                { t2: Tree<B> ->
-                    Tree(t1, f(i), t2)
+    fun <B : Comparable<B>> map(f: (A) -> B): Tree<B> =
+            foldInOrder(Empty) { t1: Tree<B> ->
+                { i: A ->
+                    { t2: Tree<B> ->
+                        Tree(t1, f(i), t2)
+                    }
                 }
             }
-        }
 
     fun <B> foldLeft(identity: B, f: (B) -> (A) -> B): B =
-                        toListPreOrderLeft().foldLeft(identity, f)
+            toListPreOrderLeft().foldLeft(identity, f)
 
-    fun remove(a: @UnsafeVariance A): Tree<A> = when(this) {
+    fun remove(a: @UnsafeVariance A): Tree<A> = when (this) {
         Empty -> this
-        is T  ->  when {
+        is T -> when {
             a < value -> T(left.remove(a), value, right)
             a > value -> T(left, value, right.remove(a))
-            else      -> left.removeMerge(right)
+            else -> left.removeMerge(right)
         }
     }
 
     fun removeMerge(ta: Tree<@UnsafeVariance A>): Tree<A> = when (this) {
         Empty -> ta
-        is T  -> when (ta) {
+        is T -> when (ta) {
             Empty -> this
             is T -> when {
                 ta.value < value -> T(left.removeMerge(ta), value, right)
                 ta.value > value -> T(left, value, right.removeMerge(ta))
-                else             -> throw IllegalStateException("We shouldn't be here")
+                else -> throw IllegalStateException("We shouldn't be here")
 
             }
         }
@@ -89,7 +89,7 @@ sealed class Tree<out A: Comparable<@UnsafeVariance A>> {
         is T -> when {
             a < value -> left.contains(a)
             a > value -> right.contains(a)
-            else      -> value == a
+            else -> value == a
         }
     }
 
@@ -126,9 +126,9 @@ sealed class Tree<out A: Comparable<@UnsafeVariance A>> {
         override fun toString(): String = "E"
     }
 
-    internal class T<out A: Comparable<@UnsafeVariance A>>(internal val left: Tree<A>,
-                                                           internal val value: A,
-                                                           internal val right: Tree<A>) : Tree<A>() {
+    internal class T<out A : Comparable<@UnsafeVariance A>>(internal val left: Tree<A>,
+                                                            internal val value: A,
+                                                            internal val right: Tree<A>) : Tree<A>() {
 
         override val size: Int = 1 + left.size + right.size
 
@@ -145,29 +145,29 @@ sealed class Tree<out A: Comparable<@UnsafeVariance A>> {
         }
 
         override fun toListPreOrderLeft(): List<A> =
-            left.toListPreOrderLeft().concat(right.toListPreOrderLeft()).cons(value)
+                left.toListPreOrderLeft().concat(right.toListPreOrderLeft()).cons(value)
 
         override fun <B> foldInOrder(identity: B, f: (B) -> (A) -> (B) -> B): B =
-            f(left.foldInOrder(identity, f))(value)(right.foldInOrder(identity, f))
+                f(left.foldInOrder(identity, f))(value)(right.foldInOrder(identity, f))
 
         override fun <B> foldPreOrder(identity: B, f: (A) -> (B) -> (B) -> B): B =
-            f(value)(left.foldPreOrder(identity, f))(right.foldPreOrder(identity, f))
+                f(value)(left.foldPreOrder(identity, f))(right.foldPreOrder(identity, f))
 
         override fun <B> foldPostOrder(identity: B, f: (B) -> (B) -> (A) -> B): B =
-            f(left.foldPostOrder(identity, f))(right.foldPostOrder(identity, f))(value)
+                f(left.foldPostOrder(identity, f))(right.foldPostOrder(identity, f))(value)
 
         override fun <B> foldLeft(identity: B, f: (B) -> (A) -> B, g: (B) -> (B) -> B): B =
-            g(right.foldLeft(identity, f, g))(f(left.foldLeft(identity, f, g))(this.value))
+                g(right.foldLeft(identity, f, g))(f(left.foldLeft(identity, f, g))(this.value))
 
         override fun <B> foldRight(identity: B, f: (A) -> (B) -> B, g: (B) -> (B) -> B): B =
-            g(f(this.value)(left.foldRight(identity, f, g)))(right.foldRight(identity, f, g))
+                g(f(this.value)(left.foldRight(identity, f, g)))(right.foldRight(identity, f, g))
 
         override fun merge(tree: Tree<@UnsafeVariance A>): Tree<A> = when (tree) {
             Empty -> this
-            is T ->   when  {
+            is T -> when {
                 tree.value > this.value -> T(left, value, right.merge(T(Empty, tree.value, tree.right))).merge(tree.left)
                 tree.value < this.value -> T(left.merge(T(tree.left, tree.value, Empty)), value, right).merge(tree.right)
-                else                    -> T(left.merge(tree.left), value, right.merge(tree.right))
+                else -> T(left.merge(tree.left), value, right.merge(tree.right))
             }
         }
 
@@ -182,52 +182,52 @@ sealed class Tree<out A: Comparable<@UnsafeVariance A>> {
 
     companion object {
 
-        operator fun <A: Comparable<A>> invoke(): Tree<A> = Empty
+        operator fun <A : Comparable<A>> invoke(): Tree<A> = Empty
 
-        operator fun <A: Comparable<A>> invoke(vararg az: A): Tree<A> =
-            az.fold(Empty) { tree: Tree<A>, a: A -> tree.plus(a) }
+        operator fun <A : Comparable<A>> invoke(vararg az: A): Tree<A> =
+                az.fold(Empty) { tree: Tree<A>, a: A -> tree.plus(a) }
 
-        operator fun <A: Comparable<A>> invoke(list: List<A>): Tree<A> =
-            list.foldLeft(Empty as Tree<A>) { tree: Tree<A> -> { a: A -> tree.plus(a) } }
+        operator fun <A : Comparable<A>> invoke(list: List<A>): Tree<A> =
+                list.foldLeft(Empty as Tree<A>) { tree: Tree<A> -> { a: A -> tree.plus(a) } }
 
-        operator fun <A: Comparable<A>> invoke(left: Tree<A>, a: A, right: Tree<A>): Tree<A> =
-            when {
-                ordered(left, a, right) -> T(left, a, right)
-                ordered(right, a, left) -> T(right, a, left)
-                else                    -> Tree(a).merge(left).merge(right)
-            }
-
-        private fun <A: Comparable<A>> lt(first: A, second: A): Boolean = first < second
-
-        private fun <A: Comparable<A>> lt(first: A, second: A, third: A): Boolean =
-                                       lt(first, second) && lt(second, third)
-
-        private fun <A: Comparable<A>> ordered(left: Tree<A>,
-                                       a: A, right: Tree<A>): Boolean =
-            (left.max().flatMap { lMax ->
-                right.min().map { rMin ->
-                    lt(lMax, a, rMin)
+        operator fun <A : Comparable<A>> invoke(left: Tree<A>, a: A, right: Tree<A>): Tree<A> =
+                when {
+                    ordered(left, a, right) -> T(left, a, right)
+                    ordered(right, a, left) -> T(right, a, left)
+                    else -> Tree(a).merge(left).merge(right)
                 }
-            }.getOrElse(left.isEmpty() && right.isEmpty()) ||
-                left.min()
-                    .mapEmpty()
-                    .flatMap {
-                                 right.min().map { rMin ->
-                                     lt(a, rMin)
-                                 }
-                     }.getOrElse(false) ||
-                right.min()
-                    .mapEmpty()
-                    .flatMap {
-                                 left.max().map { lMax ->
-                                     lt(lMax, a)
-                                 }
-                             }.getOrElse(false))
 
-        private tailrec fun <A: Comparable<A>> unBalanceRight(acc: List<A>, tree: Tree<A>): List<A> =
+        private fun <A : Comparable<A>> lt(first: A, second: A): Boolean = first < second
+
+        private fun <A : Comparable<A>> lt(first: A, second: A, third: A): Boolean =
+                lt(first, second) && lt(second, third)
+
+        private fun <A : Comparable<A>> ordered(left: Tree<A>,
+                                                a: A, right: Tree<A>): Boolean =
+                (left.max().flatMap { lMax ->
+                    right.min().map { rMin ->
+                        lt(lMax, a, rMin)
+                    }
+                }.getOrElse(left.isEmpty() && right.isEmpty()) ||
+                        left.min()
+                                .mapEmpty()
+                                .flatMap {
+                                    right.min().map { rMin ->
+                                        lt(a, rMin)
+                                    }
+                                }.getOrElse(false) ||
+                        right.min()
+                                .mapEmpty()
+                                .flatMap {
+                                    left.max().map { lMax ->
+                                        lt(lMax, a)
+                                    }
+                                }.getOrElse(false))
+
+        private tailrec fun <A : Comparable<A>> unBalanceRight(acc: List<A>, tree: Tree<A>): List<A> =
                 when (tree) {
                     Empty -> acc
-                    is T  -> when (tree.left) {
+                    is T -> when (tree.left) {
                         Empty -> unBalanceRight(acc.cons(tree.value), tree.right)
                         is T -> unBalanceRight(acc, tree.rotateRight())
                     }

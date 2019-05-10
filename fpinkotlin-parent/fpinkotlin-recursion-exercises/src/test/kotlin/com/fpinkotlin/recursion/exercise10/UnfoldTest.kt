@@ -11,7 +11,7 @@ class UnfoldTest : StringSpec() {
 
         "unfold" {
             forAll(Gen.choose(0, 10_000), Gen.choose(0, 10_000)) { a: Int, b: Int ->
-                a > b || unfold(a, { x -> x + 1}) { x -> x < b }  == (a until b).toList()
+                a > b || unfold(a, { x -> x + 1 }) { x -> x < b } == (a until b).toList()
             }
         }
     }

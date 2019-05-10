@@ -3,11 +3,11 @@ package com.fpinkotlin.handlingerrors.exercise05
 import java.io.Serializable
 
 
-sealed class Result<out A>: Serializable {
+sealed class Result<out A> : Serializable {
 
     abstract fun <B> map(f: (A) -> B): Result<B>
 
-    abstract fun <B> flatMap(f: (A) ->  Result<B>): Result<B>
+    abstract fun <B> flatMap(f: (A) -> Result<B>): Result<B>
 
     fun filter(p: (A) -> Boolean): Result<A> = flatMap {
         if (p(it))
@@ -45,7 +45,7 @@ sealed class Result<out A>: Serializable {
                 }
             }
 
-    internal object Empty: Result<Nothing>() {
+    internal object Empty : Result<Nothing>() {
 
         override fun <B> map(f: (Nothing) -> B): Result<B> = Empty
 
@@ -54,7 +54,7 @@ sealed class Result<out A>: Serializable {
         override fun toString(): String = "Empty"
     }
 
-    internal class Failure<out A>(private val exception: RuntimeException): Result<A>() {
+    internal class Failure<out A>(private val exception: RuntimeException) : Result<A>() {
 
         override fun <B> map(f: (A) -> B): Result<B> = Failure(exception)
 

@@ -6,7 +6,7 @@ import com.fpinkotlin.common.Result
 
 class Receiver(id: String,
                private val client: Actor<List<Int>>) :
-                                AbstractActor<Int>(id) {
+        AbstractActor<Int>(id) {
 
     private val receiverFunction: (Receiver) -> (Behavior) -> (Int) -> Unit
 
@@ -19,7 +19,7 @@ class Receiver(id: String,
                         shutdown()
                     } else {
                         receiver.context
-                            .become(Behavior(behavior.resultList.cons(i)))
+                                .become(Behavior(behavior.resultList.cons(i)))
                     }
                 }
             }
@@ -31,8 +31,8 @@ class Receiver(id: String,
     }
 
     internal inner class Behavior internal constructor(
-        internal val resultList: List<Int>) :
-                          MessageProcessor<Int> {
+            internal val resultList: List<Int>) :
+            MessageProcessor<Int> {
 
         override fun process(i: Int, sender: Result<Actor<Int>>) {
             receiverFunction(this@Receiver)(this@Behavior)(i)

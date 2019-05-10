@@ -3,7 +3,7 @@ package com.fpinkotlin.effects.exercise01
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 
-class ListTest: StringSpec() {
+class ListTest : StringSpec() {
 
     init {
 

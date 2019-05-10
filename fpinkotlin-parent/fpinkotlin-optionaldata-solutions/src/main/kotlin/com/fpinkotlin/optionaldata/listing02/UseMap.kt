@@ -2,9 +2,9 @@ package com.fpinkotlin.optionaldata.listing02
 
 import com.fpinkotlin.optionaldata.exercise06.Option
 
-data class Toon (val firstName: String,
-                 val lastName: String,
-                 val email: Option<String> = Option()) {
+data class Toon(val firstName: String,
+                val lastName: String,
+                val email: Option<String> = Option()) {
 
     companion object {
         operator fun invoke(firstName: String,
@@ -18,7 +18,7 @@ fun <K, V> Map<K, V>.getOption(key: K) = Option(this[key])
 
 fun main(args: Array<String>) {
 
-    val toons: Map<String, Toon>  = mapOf(
+    val toons: Map<String, Toon> = mapOf(
             "Mickey" to Toon("Mickey", "Mouse", "mickey@disney.com"),
             "Minnie" to Toon("Minnie", "Mouse"),
             "Donald" to Toon("Donald", "Duck", "donald@disney.com"))

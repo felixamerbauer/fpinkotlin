@@ -3,7 +3,7 @@ package com.fpinkotlin.workingwithlaziness.exercise06
 import io.kotlintest.properties.forAll
 import io.kotlintest.specs.StringSpec
 
-class LazyTest: StringSpec() {
+class LazyTest : StringSpec() {
 
     init {
 

@@ -15,8 +15,8 @@ private val format = Pair("First Name : %s\n" +
 
 fun main(args: Array<String>) {
     val program = readXmlFile(::getXmlFilePath,
-                              ::getRootElementName,
-                              format,
-                              ::processList)
+            ::getRootElementName,
+            format,
+            ::processList)
     program()
 }

@@ -8,7 +8,7 @@ import io.kotlintest.specs.StringSpec
 
 typealias Stack<T> = List<T>
 
-class ListTest: StringSpec() {
+class ListTest : StringSpec() {
 
     init {
 
@@ -22,7 +22,7 @@ class ListTest: StringSpec() {
     }
 }
 
-class IntListGenerator(private val min: Int, private val max: Int): Gen<List<Int>> {
+class IntListGenerator(private val min: Int, private val max: Int) : Gen<List<Int>> {
 
     override fun constants(): Iterable<List<Int>> = Gen.list(Gen.choose(min, max)).constants().map { List(*(it.toTypedArray())) }
 

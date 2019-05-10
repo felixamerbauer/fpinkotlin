@@ -2,7 +2,7 @@ package com.fpinkotlin.advancedtrees.listing03
 
 import com.fpinkotlin.common.Result
 
-sealed class Heap<out A: Comparable<@UnsafeVariance A>> {
+sealed class Heap<out A : Comparable<@UnsafeVariance A>> {
 
     internal abstract val left: Result<Heap<A>>  // <1>
     internal abstract val right: Result<Heap<A>>  // <1>
@@ -11,7 +11,7 @@ sealed class Heap<out A: Comparable<@UnsafeVariance A>> {
     abstract val size: Int  // <2>
     abstract val isEmpty: Boolean
 
-    abstract class Empty<out A: Comparable<@UnsafeVariance A>>: Heap<A>() { // <3>
+    abstract class Empty<out A : Comparable<@UnsafeVariance A>> : Heap<A>() { // <3>
 
         override val isEmpty: Boolean = true
 
@@ -26,12 +26,12 @@ sealed class Heap<out A: Comparable<@UnsafeVariance A>> {
         override val size: Int = 0
     }
 
-    internal object E: Empty<Nothing>() // <4>
+    internal object E : Empty<Nothing>() // <4>
 
-    internal class H<out A: Comparable<@UnsafeVariance A>>(override val rank: Int, // <5>
-                                                           private val lft: Heap<A>,
-                                                           private val hd: A,
-                                                           private val rght: Heap<A>): Heap<A>()  {
+    internal class H<out A : Comparable<@UnsafeVariance A>>(override val rank: Int, // <5>
+                                                            private val lft: Heap<A>,
+                                                            private val hd: A,
+                                                            private val rght: Heap<A>) : Heap<A>() {
 
         override val isEmpty: Boolean = false
 
@@ -46,6 +46,6 @@ sealed class Heap<out A: Comparable<@UnsafeVariance A>> {
 
     companion object {
 
-        operator fun <A: Comparable<A>> invoke(): Heap<A> = E // <6>
+        operator fun <A : Comparable<A>> invoke(): Heap<A> = E // <6>
     }
 }

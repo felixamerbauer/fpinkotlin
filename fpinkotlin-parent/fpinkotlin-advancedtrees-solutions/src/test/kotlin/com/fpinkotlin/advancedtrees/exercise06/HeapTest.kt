@@ -5,7 +5,7 @@ import com.fpinkotlin.common.List
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 
-class HeapTest: StringSpec() {
+class HeapTest : StringSpec() {
 
     init {
 
@@ -25,15 +25,15 @@ class HeapTest: StringSpec() {
     }
 }
 
-private fun <A: Comparable<A>> isValueOrdered(heap: Heap<A>): Boolean {
-    fun <A: Comparable<A>> isValueOrderedHelper(heap: Heap<A>): Boolean =
-        heap.head.flatMap { t1 ->
-            heap.tail().flatMap { tail -> tail.head.map { t2 -> t1 <= t2 } }
-        }.getOrElse(true)
+private fun <A : Comparable<A>> isValueOrdered(heap: Heap<A>): Boolean {
+    fun <A : Comparable<A>> isValueOrderedHelper(heap: Heap<A>): Boolean =
+            heap.head.flatMap { t1 ->
+                heap.tail().flatMap { tail -> tail.head.map { t2 -> t1 <= t2 } }
+            }.getOrElse(true)
     return isValueOrderedHelper(heap) && heap.tail().map { isValueOrderedHelper(it) }.getOrElse(true)
 }
 
 fun log2nlz(n: Int): Int = when (n) {
-    0    -> 0
+    0 -> 0
     else -> 31 - Integer.numberOfLeadingZeros(n)
 }

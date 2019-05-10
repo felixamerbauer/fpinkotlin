@@ -17,8 +17,8 @@ object Store {
         val toothPaste = Product("Tooth paste", 1.5, 0.5)
         val toothBrush = Product("Tooth brush", 3.5, 0.3)
         val orderLines = listOf(
-            OrderLine(toothPaste, 2),
-            OrderLine(toothBrush, 3))
+                OrderLine(toothPaste, 2),
+                OrderLine(toothBrush, 3))
         val weight = orderLines.sumByDouble { it.amount() }
         val price = orderLines.sumByDouble { it.weight() }
         println("Total price: $price")

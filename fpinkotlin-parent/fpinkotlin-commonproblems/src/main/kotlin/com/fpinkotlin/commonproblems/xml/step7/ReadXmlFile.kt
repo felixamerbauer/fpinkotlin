@@ -12,15 +12,16 @@ import java.io.IOException
 import java.io.StringReader
 
 fun <T> readXmlFile(sPath: () -> FilePath,
-                sRootName: () -> ElementName,
-                function: (Element) -> Result<T>,
-                effect: (List<T>) -> Unit): () -> Unit {
+                    sRootName: () -> ElementName,
+                    function: (Element) -> Result<T>,
+                    effect: (List<T>) -> Unit): () -> Unit {
     val path = sPath().value
     val rDoc = path.flatMap(::readFile2String)
     val rRoot = sRootName().value
     val result = rDoc.flatMap { doc ->
         rRoot.flatMap { rootElementName ->
-            readDocument(rootElementName, doc) }
+            readDocument(rootElementName, doc)
+        }
                 .flatMap { list -> sequence(list.map(function)) }
     }
     return {
@@ -30,32 +31,32 @@ fun <T> readXmlFile(sPath: () -> FilePath,
 }
 
 fun readFile2String(path: String): Result<String> =
-    try {
-        FileInputStream(File(path)).use {
-            it.bufferedReader().use {
-                Result(it.readText())
+        try {
+            FileInputStream(File(path)).use {
+                it.bufferedReader().use {
+                    Result(it.readText())
+                }
             }
+        } catch (e: IOException) {
+            Result.failure("IOException while reading file $path: ${e.message}")
+        } catch (e: Exception) {
+            Result.failure("Unexpected error while reading file $path: ${e.message}")
         }
-    } catch (e: IOException) {
-        Result.failure("IOException while reading file $path: ${e.message}")
-    } catch (e: Exception) {
-        Result.failure("Unexpected error while reading file $path: ${e.message}")
-    }
 
 fun readDocument(rootElementName: String, stringDoc: String): Result<List<Element>> =
-    SAXBuilder().let { builder ->
-        try {
-            val document = builder.build(StringReader(stringDoc))
-            val rootElement = document.rootElement
-            Result(List(*rootElement.getChildren(rootElementName).toTypedArray()))
-        } catch (io: IOException) {
-            Result.failure("Invalid root element name '$rootElementName' or XML data $stringDoc: ${io.message}")
-        } catch (jde: JDOMException) {
-            Result.failure("Invalid root element name '$rootElementName' or XML data $stringDoc: ${jde.message}")
-        } catch (e: Exception) {
-            Result.failure("Unexpected error while reading XML data $stringDoc: ${e.message}")
+        SAXBuilder().let { builder ->
+            try {
+                val document = builder.build(StringReader(stringDoc))
+                val rootElement = document.rootElement
+                Result(List(*rootElement.getChildren(rootElementName).toTypedArray()))
+            } catch (io: IOException) {
+                Result.failure("Invalid root element name '$rootElementName' or XML data $stringDoc: ${io.message}")
+            } catch (jde: JDOMException) {
+                Result.failure("Invalid root element name '$rootElementName' or XML data $stringDoc: ${jde.message}")
+            } catch (e: Exception) {
+                Result.failure("Unexpected error while reading XML data $stringDoc: ${e.message}")
+            }
         }
-    }
 
 val processElement: (List<String>) -> (String) -> (Element) -> Result<String> = { elementNames ->
     { format ->

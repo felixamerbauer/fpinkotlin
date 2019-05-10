@@ -8,23 +8,23 @@ import java.util.*
 class PropertyReader(configFileName: String) {
 
     private val properties: Result<Properties> =
-        Result.of {
-            MethodHandles.lookup().lookupClass()
-                .getResourceAsStream(configFileName)
-                .use { inputStream ->
-                    Properties().let {
-                        it.load(inputStream)
-                        it
-                    }
-                }
-        }
+            Result.of {
+                MethodHandles.lookup().lookupClass()
+                        .getResourceAsStream(configFileName)
+                        .use { inputStream ->
+                            Properties().let {
+                                it.load(inputStream)
+                                it
+                            }
+                        }
+            }
 
     fun readProperty(name: String) =
-        properties.flatMap {
-            Result.of {
-                it.getProperty(name)
+            properties.flatMap {
+                Result.of {
+                    it.getProperty(name)
+                }
             }
-        }
 }
 
 fun main(args: Array<String>) {

@@ -5,7 +5,7 @@ import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 import java.util.*
 
-class OptionTest: StringSpec() {
+class OptionTest : StringSpec() {
 
     private val random = Random()
 
@@ -21,7 +21,7 @@ class OptionTest: StringSpec() {
 
         "getOrElse None" {
             val option: Option<Int> = Option.None
-            option.getOrElse(1) shouldBe  1
+            option.getOrElse(1) shouldBe 1
         }
     }
 }

@@ -3,7 +3,7 @@ package com.fpinkotlin.optionaldata.exercise10
 import io.kotlintest.properties.forAll
 import io.kotlintest.specs.StringSpec
 
-class OptionTest: StringSpec() {
+class OptionTest : StringSpec() {
 
     init {
 

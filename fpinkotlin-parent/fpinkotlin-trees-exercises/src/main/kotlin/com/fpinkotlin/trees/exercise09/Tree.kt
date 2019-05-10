@@ -5,7 +5,7 @@ import com.fpinkotlin.common.Result
 import kotlin.math.max
 
 
-sealed class Tree<out A: Comparable<@UnsafeVariance A>> {
+sealed class Tree<out A : Comparable<@UnsafeVariance A>> {
 
     abstract val size: Int
 
@@ -42,9 +42,9 @@ sealed class Tree<out A: Comparable<@UnsafeVariance A>> {
         }
     }
 
-    fun remove(a: @UnsafeVariance A): Tree<A> = when(this) {
+    fun remove(a: @UnsafeVariance A): Tree<A> = when (this) {
         Empty -> this
-        is T  ->  when {
+        is T -> when {
             a < value -> T(left.remove(a), value, right)
             a > value -> T(left, value, right.remove(a))
             else -> left.removeMerge(right)
@@ -53,12 +53,12 @@ sealed class Tree<out A: Comparable<@UnsafeVariance A>> {
 
     fun removeMerge(ta: Tree<@UnsafeVariance A>): Tree<A> = when (this) {
         Empty -> ta
-        is T  -> when (ta) {
+        is T -> when (ta) {
             Empty -> this
             is T -> when {
                 ta.value < value -> T(left.removeMerge(ta), value, right)
                 ta.value > value -> T(left, value, right.removeMerge(ta))
-                else             -> throw IllegalStateException("We shouldn't be here")
+                else -> throw IllegalStateException("We shouldn't be here")
             }
         }
     }
@@ -99,9 +99,9 @@ sealed class Tree<out A: Comparable<@UnsafeVariance A>> {
         override fun toString(): String = "E"
     }
 
-    internal class T<out A: Comparable<@UnsafeVariance A>>(internal val left: Tree<A>,
-                                                           internal val value: A,
-                                                           internal val right: Tree<A>) : Tree<A>() {
+    internal class T<out A : Comparable<@UnsafeVariance A>>(internal val left: Tree<A>,
+                                                            internal val value: A,
+                                                            internal val right: Tree<A>) : Tree<A>() {
 
         override val size: Int = 1 + left.size + right.size
 
@@ -114,17 +114,17 @@ sealed class Tree<out A: Comparable<@UnsafeVariance A>> {
         override fun <B> foldPostOrder(identity: B, f: (B) -> (B) -> (A) -> B): B = TODO("foldPostOrder")
 
         override fun <B> foldLeft(identity: B, f: (B) -> (A) -> B, g: (B) -> (B) -> B): B =
-            g(right.foldLeft(identity, f, g))(f(left.foldLeft(identity, f, g))(this.value))
+                g(right.foldLeft(identity, f, g))(f(left.foldLeft(identity, f, g))(this.value))
 
         override fun <B> foldRight(identity: B, f: (A) -> (B) -> B, g: (B) -> (B) -> B): B =
-            g(f(this.value)(left.foldRight(identity, f, g)))(right.foldRight(identity, f, g))
+                g(f(this.value)(left.foldRight(identity, f, g)))(right.foldRight(identity, f, g))
 
         override fun merge(tree: Tree<@UnsafeVariance A>): Tree<A> = when (tree) {
             Empty -> this
-            is T ->   when  {
+            is T -> when {
                 tree.value > this.value -> T(left, value, right.merge(T(Empty, tree.value, tree.right))).merge(tree.left)
                 tree.value < this.value -> T(left.merge(T(tree.left, tree.value, Empty)), value, right).merge(tree.right)
-                else                    -> T(left.merge(tree.left), value, right.merge(tree.right))
+                else -> T(left.merge(tree.left), value, right.merge(tree.right))
             }
         }
 
@@ -139,12 +139,12 @@ sealed class Tree<out A: Comparable<@UnsafeVariance A>> {
 
     companion object {
 
-        operator fun <A: Comparable<A>> invoke(): Tree<A> = Empty
+        operator fun <A : Comparable<A>> invoke(): Tree<A> = Empty
 
-        operator fun <A: Comparable<A>> invoke(vararg az: A): Tree<A> =
-            az.fold(Empty) { tree: Tree<A>, a: A -> tree.plus(a) }
+        operator fun <A : Comparable<A>> invoke(vararg az: A): Tree<A> =
+                az.fold(Empty) { tree: Tree<A>, a: A -> tree.plus(a) }
 
-        operator fun <A: Comparable<A>> invoke(list: List<A>): Tree<A> =
-            list.foldLeft(Empty as Tree<A>) { tree: Tree<A> -> { a: A -> tree.plus(a) } }
+        operator fun <A : Comparable<A>> invoke(list: List<A>): Tree<A> =
+                list.foldLeft(Empty as Tree<A>) { tree: Tree<A> -> { a: A -> tree.plus(a) } }
     }
 }

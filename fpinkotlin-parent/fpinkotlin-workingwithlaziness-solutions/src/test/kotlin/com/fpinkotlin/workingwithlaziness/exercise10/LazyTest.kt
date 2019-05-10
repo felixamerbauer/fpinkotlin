@@ -5,7 +5,7 @@ import com.fpinkotlin.common.Result
 import io.kotlintest.properties.forAll
 import io.kotlintest.specs.StringSpec
 
-class LazyTest: StringSpec() {
+class LazyTest : StringSpec() {
 
     init {
 

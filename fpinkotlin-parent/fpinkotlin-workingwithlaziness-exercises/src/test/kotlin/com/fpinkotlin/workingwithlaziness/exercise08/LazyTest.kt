@@ -4,7 +4,7 @@ import com.fpinkotlin.common.List
 import io.kotlintest.properties.forAll
 import io.kotlintest.specs.StringSpec
 
-class LazyTest: StringSpec() {
+class LazyTest : StringSpec() {
 
     init {
 
@@ -35,11 +35,11 @@ class LazyTest: StringSpec() {
                         name1Calls == 0 &&
                         name2Calls == 0 &&
                         name3Calls == 0) ||
-                (condition &&
-                        result1 == result2 &&
-                        name1Calls == 1 &&
-                        name2Calls == 1 &&
-                        name3Calls == 1)
+                        (condition &&
+                                result1 == result2 &&
+                                name1Calls == 1 &&
+                                name2Calls == 1 &&
+                                name3Calls == 1)
             }
         }
     }

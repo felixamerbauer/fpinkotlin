@@ -11,49 +11,49 @@ import java.util.*
 class PropertyReader(configFileName: String) {
 
     private val properties: Result<Properties> =
-        try {
-            MethodHandles.lookup().lookupClass()
-                .getResourceAsStream(configFileName)
-                .use { inputStream ->
-                    when (inputStream) {
-                        null -> Result.failure("File $configFileName not found in classpath")
-                        else -> Properties().let {
-                            it.load(inputStream)
-                            Result(it)
-                        }
+            try {
+                MethodHandles.lookup().lookupClass()
+                        .getResourceAsStream(configFileName)
+                        .use { inputStream ->
+                            when (inputStream) {
+                                null -> Result.failure("File $configFileName not found in classpath")
+                                else -> Properties().let {
+                                    it.load(inputStream)
+                                    Result(it)
+                                }
 
-                    }
-                }
-        } catch (e: IOException) {
-            Result.failure("IOException reading classpath resource $configFileName")
-        } catch (e: Exception) {
-            Result.failure("Exception: ${e.message}reading classpath resource $configFileName")
-        }
+                            }
+                        }
+            } catch (e: IOException) {
+                Result.failure("IOException reading classpath resource $configFileName")
+            } catch (e: Exception) {
+                Result.failure("Exception: ${e.message}reading classpath resource $configFileName")
+            }
 
     fun readAsString(name: String): Result<String> =
-        properties.flatMap {
-            Result.of {
-                it.getProperty(name)
-            }.mapFailure("Property '$name' no found")
-        }
+            properties.flatMap {
+                Result.of {
+                    it.getProperty(name)
+                }.mapFailure("Property '$name' no found")
+            }
 
     fun readAsInt(name: String): Result<Int> =
-        readAsString(name).flatMap {
-            try {
-                Result(it.toInt())
-            } catch (e: NumberFormatException) {
-                Result.failure<Int>("Invalid value while parsing property '$name' to Int: $it")
+            readAsString(name).flatMap {
+                try {
+                    Result(it.toInt())
+                } catch (e: NumberFormatException) {
+                    Result.failure<Int>("Invalid value while parsing property '$name' to Int: $it")
+                }
             }
-        }
 
     fun <T> readAsList(name: String, f: (String) -> T): Result<List<T>> =
-        readAsString(name).flatMap {
-            try {
-                Result(fromSeparated(it, ",").map(f))
-            } catch (e: Exception) {
-                Result.failure<List<T>>("Invalid value while parsing property '$name' to List: $it")
+            readAsString(name).flatMap {
+                try {
+                    Result(fromSeparated(it, ",").map(f))
+                } catch (e: Exception) {
+                    Result.failure<List<T>>("Invalid value while parsing property '$name' to List: $it")
+                }
             }
-        }
 
     fun readAsIntList(name: String): Result<List<Int>> = readAsList(name, String::toInt)
 
@@ -62,15 +62,15 @@ class PropertyReader(configFileName: String) {
     fun readAsBooleanList(name: String): Result<List<Boolean>> = readAsList(name, String::toBoolean)
 
     fun <T> readAsType(f: (String) -> Result<T>, name: String) =
-        readAsString(name).flatMap  {
-            try {
-                f(it)
-            } catch (e: Exception) {
-                Result.failure<T>("Invalid value while parsing property $name: $it")
+            readAsString(name).flatMap {
+                try {
+                    f(it)
+                } catch (e: Exception) {
+                    Result.failure<T>("Invalid value while parsing property $name: $it")
+                }
             }
-        }
 
-    inline fun <reified T: Enum<T>> readAsEnum(name: String, enumClass: Class<T>): Result<T>  {
+    inline fun <reified T : Enum<T>> readAsEnum(name: String, enumClass: Class<T>): Result<T> {
         val f: (String) -> Result<T> = {
             try {
                 val value = enumValueOf<T>(it)
@@ -86,7 +86,7 @@ class PropertyReader(configFileName: String) {
 
 data class Person(val id: Int, val firstName: String, val lastName: String)
 
-enum class Type {SERIAL, PARALLEL}
+enum class Type { SERIAL, PARALLEL }
 
 fun main(args: Array<String>) {
     val propertyReader = PropertyReader("/config.properties")

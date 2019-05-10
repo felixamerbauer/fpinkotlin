@@ -8,16 +8,18 @@ import java.util.*
 class PropertyReader(configFileName: String) {
 
     internal val properties: Result<Properties> = // <1>
-        Result.of { // <2>
-            MethodHandles.lookup().lookupClass() // <3>
-                .getResourceAsStream(configFileName) // <4>
-                .use { inputStream -> // <5>
-                    Properties().let {
-                        it.load(inputStream) // <6>
-                        it
-                    }
-                }
-        }
+            Result.of {
+                // <2>
+                MethodHandles.lookup().lookupClass() // <3>
+                        .getResourceAsStream(configFileName) // <4>
+                        .use { inputStream ->
+                            // <5>
+                            Properties().let {
+                                it.load(inputStream) // <6>
+                                it
+                            }
+                        }
+            }
 }
 
 fun main(args: Array<String>) {

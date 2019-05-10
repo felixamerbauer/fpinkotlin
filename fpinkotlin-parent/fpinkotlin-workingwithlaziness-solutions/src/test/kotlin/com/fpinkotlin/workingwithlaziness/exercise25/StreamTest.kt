@@ -5,7 +5,7 @@ import io.kotlintest.properties.Gen
 import io.kotlintest.properties.forAll
 import io.kotlintest.specs.StringSpec
 
-class StreamTest: StringSpec() {
+class StreamTest : StringSpec() {
 
     init {
 
@@ -13,9 +13,9 @@ class StreamTest: StringSpec() {
             forAll(10, Gen.choose(0, 1_000), Gen.choose(0, 500)) { a, limit ->
                 fun inc(i: Int): Int = i + 1
                 val stream = Stream
-                        .iterate(Lazy{ inc(0) }, ::inc)
+                        .iterate(Lazy { inc(0) }, ::inc)
                         .takeAtMost(a)
-                        .append(Lazy { Stream.iterate(Lazy{ inc(a) }, ::inc) })
+                        .append(Lazy { Stream.iterate(Lazy { inc(a) }, ::inc) })
                         .filter { it % 2 != 0 }
                         .takeWhileViaFoldRight { it < limit * 2 }
                 val result = stream.toList()

@@ -4,7 +4,7 @@ sealed class Option<out A> {
 
     abstract fun isEmpty(): Boolean
 
-    internal object None: Option<Nothing>() {
+    internal object None : Option<Nothing>() {
 
         override fun isEmpty() = true
 

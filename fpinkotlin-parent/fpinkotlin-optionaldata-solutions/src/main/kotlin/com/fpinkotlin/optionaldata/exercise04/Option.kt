@@ -19,7 +19,7 @@ sealed class Option<out A> {
         is Some -> value
     }
 
-    internal object None: Option<Nothing>() {
+    internal object None : Option<Nothing>() {
 
         override fun <B> map(f: (Nothing) -> B): Option<B> = None
 

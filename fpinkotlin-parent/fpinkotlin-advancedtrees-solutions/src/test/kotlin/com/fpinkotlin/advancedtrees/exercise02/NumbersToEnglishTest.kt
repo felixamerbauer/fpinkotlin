@@ -9,7 +9,7 @@ import com.fpinkotlin.advancedtrees.exercise02.NumbersToEnglish.thousands2String
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 
-class NumbersToEnglishTest: StringSpec() {
+class NumbersToEnglishTest : StringSpec() {
 
     init {
 

@@ -7,7 +7,7 @@ import io.kotlintest.properties.forAll
 import io.kotlintest.specs.StringSpec
 
 
-class ListTest: StringSpec() {
+class ListTest : StringSpec() {
 
     init {
 
@@ -21,7 +21,7 @@ class ListTest: StringSpec() {
     }
 }
 
-class IntListGenerator(private val min: Int, private val max: Int): Gen<List<Int>> {
+class IntListGenerator(private val min: Int, private val max: Int) : Gen<List<Int>> {
 
     override fun constants(): Iterable<List<Int>> = Gen.list(Gen.choose(min, max)).constants().map { List(*(it.toTypedArray())) }
 

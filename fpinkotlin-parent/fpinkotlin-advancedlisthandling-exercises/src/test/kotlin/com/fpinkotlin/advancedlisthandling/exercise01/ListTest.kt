@@ -6,7 +6,7 @@ import io.kotlintest.properties.forAll
 import io.kotlintest.specs.StringSpec
 
 
-class ListTest: StringSpec() {
+class ListTest : StringSpec() {
 
     init {
 

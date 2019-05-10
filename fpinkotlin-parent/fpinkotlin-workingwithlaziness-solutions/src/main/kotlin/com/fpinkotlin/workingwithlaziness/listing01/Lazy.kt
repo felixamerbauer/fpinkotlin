@@ -3,10 +3,9 @@ package com.fpinkotlin.workingwithlaziness.listing01
 import com.fpinkotlin.common.List
 import com.fpinkotlin.common.Result
 import com.fpinkotlin.common.sequence
-import java.lang.IllegalStateException
 import java.util.*
 
-class Lazy<out A>(function: () -> A): () -> A {
+class Lazy<out A>(function: () -> A) : () -> A {
 
     private val value: A by lazy(function)
 
@@ -40,7 +39,7 @@ class Lazy<out A>(function: () -> A): () -> A {
     }
 }
 
-fun <A, B, C> lift2(f: (A) -> (B) -> C): (Lazy<A>) ->  (Lazy<B>) -> Lazy<C> =
+fun <A, B, C> lift2(f: (A) -> (B) -> C): (Lazy<A>) -> (Lazy<B>) -> Lazy<C> =
         { ls1 ->
             { ls2 ->
                 Lazy { f(ls1())(ls2()) }
@@ -79,7 +78,7 @@ fun main(args: Array<String>) {
     val defaultMessage = "No greetings when time is odd"
     val condition = Random(System.currentTimeMillis()).nextInt() % 2 == 0
     val printMessage: (Result<List<String>>) -> Unit = ::println
-    val printDefault: () -> Unit = { println(defaultMessage)}
+    val printDefault: () -> Unit = { println(defaultMessage) }
     println(condition)
     println("===")
     list1.forEach(condition, printMessage, printDefault)

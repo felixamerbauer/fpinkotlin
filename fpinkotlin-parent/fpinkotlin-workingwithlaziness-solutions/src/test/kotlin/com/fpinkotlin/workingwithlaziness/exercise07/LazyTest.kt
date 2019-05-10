@@ -3,7 +3,7 @@ package com.fpinkotlin.workingwithlaziness.exercise07
 import io.kotlintest.properties.forAll
 import io.kotlintest.specs.StringSpec
 
-class LazyTest: StringSpec() {
+class LazyTest : StringSpec() {
 
     init {
 
@@ -14,7 +14,7 @@ class LazyTest: StringSpec() {
                     greetingsCalls++
                     "Hello"
                 }
-                val flatGreets: (String) -> Lazy<String> = { name -> greetings.map { "$it, $name!"} }
+                val flatGreets: (String) -> Lazy<String> = { name -> greetings.map { "$it, $name!" } }
 
                 var nameCalls = 0
                 val name: Lazy<String> = Lazy {

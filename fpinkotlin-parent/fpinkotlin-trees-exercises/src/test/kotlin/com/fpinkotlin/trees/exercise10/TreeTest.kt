@@ -7,7 +7,7 @@ import com.fpinkotlin.common.unfold
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 
-class TreeTest: StringSpec() {
+class TreeTest : StringSpec() {
 
     init {
 

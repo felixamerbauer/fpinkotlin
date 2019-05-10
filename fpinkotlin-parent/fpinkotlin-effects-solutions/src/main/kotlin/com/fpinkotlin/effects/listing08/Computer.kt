@@ -18,16 +18,16 @@ internal object Computer {
     private val factorialComputer: (String) -> IO<Boolean> = { line ->
         condition(line != "x") {
             factorial(BigInteger.valueOf(line.toLong()))
-                .map { "factorial: $it" }
-                .flatMap(Console::printLine)
+                    .map { "factorial: $it" }
+                    .flatMap(Console::printLine)
         }
     }
 
     private val squareComputer: (String) -> IO<Boolean> = { line ->
         condition(line != "x") {
             unit(square(BigInteger.valueOf(line.toLong())))
-                .map { "square: $it" }
-                .flatMap(Console::printLine)
+                    .map { "square: $it" }
+                    .flatMap(Console::printLine)
         }
     }
 
@@ -44,24 +44,24 @@ internal object Computer {
     fun readInt(): IO<String> = Console.readLine()
 
     fun factorial(n: Int): IO<Int> =
-        ref(1).flatMap { acc ->
-            forEach(Stream.range(1, n)) { skip(acc.modify { x -> x * it }) }
-                .flatMap { acc.get() }
-        }
+            ref(1).flatMap { acc ->
+                forEach(Stream.range(1, n)) { skip(acc.modify { x -> x * it }) }
+                        .flatMap { acc.get() }
+            }
 
     fun factorial(n: BigInteger): IO<BigInteger> =
-        ref(BigInteger.ONE).flatMap { acc ->
-                     forEach(Stream.range(BigInteger.ONE, n)) { skip(acc.modify { x -> x * it }) }
-                         .flatMap { acc.get() }
-                 }
+            ref(BigInteger.ONE).flatMap { acc ->
+                forEach(Stream.range(BigInteger.ONE, n)) { skip(acc.modify { x -> x * it }) }
+                        .flatMap { acc.get() }
+            }
 
     fun square(n: BigInteger): BigInteger = n * n
 
     private fun compute(f: (String) -> IO<Boolean>, name: String): IO<Unit> = sequence(
-        printLine("The $name computer"),
-        printLine(" - Enter a number to compute its $name"),
-        printLine(" - Enter 'x' to exit"),
-        doWhile(readLine(), f),
-        printLine("I'll be back."))
+            printLine("The $name computer"),
+            printLine(" - Enter a number to compute its $name"),
+            printLine(" - Enter 'x' to exit"),
+            doWhile(readLine(), f),
+            printLine("I'll be back."))
 }
 

@@ -3,7 +3,7 @@ package com.fpinkotlin.functions.exercise05
 
 import io.kotlintest.specs.StringSpec
 
-class FunctionsTest: StringSpec() {
+class FunctionsTest : StringSpec() {
 
     init {
 

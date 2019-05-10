@@ -1,7 +1,7 @@
 package com.fpinkotlin.workingwithlaziness.exercise06
 
 
-class Lazy<out A>(function: () -> A): () -> A {
+class Lazy<out A>(function: () -> A) : () -> A {
 
     private val value: A by lazy(function)
 
@@ -10,7 +10,7 @@ class Lazy<out A>(function: () -> A): () -> A {
     fun <B> map(f: (A) -> B): Lazy<B> = TODO("lift2")
 }
 
-fun <A, B, C> lift2(f: (A) -> (B) -> C): (Lazy<A>) ->  (Lazy<B>) -> Lazy<C> =
+fun <A, B, C> lift2(f: (A) -> (B) -> C): (Lazy<A>) -> (Lazy<B>) -> Lazy<C> =
         { ls1 ->
             { ls2 ->
                 Lazy { f(ls1())(ls2()) }

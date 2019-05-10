@@ -3,7 +3,7 @@ package com.fpinkotlin.advancedtrees.exercise04
 import com.fpinkotlin.common.List
 import com.fpinkotlin.common.Result
 
-class Map<out K: Comparable<@UnsafeVariance K>, V>(private val delegate: Tree<MapEntry<Int, Any>> = Tree()) { // replace Any with the right type
+class Map<out K : Comparable<@UnsafeVariance K>, V>(private val delegate: Tree<MapEntry<Int, Any>> = Tree()) { // replace Any with the right type
 
     private fun getAll(key: @UnsafeVariance K): Result<List<Pair<K, V>>> = TODO("getAll")
 
@@ -19,6 +19,6 @@ class Map<out K: Comparable<@UnsafeVariance K>, V>(private val delegate: Tree<Ma
 
     companion object {
 
-        operator fun <K: Comparable<@UnsafeVariance K>, V> invoke(): Map<K, V> = Map()
+        operator fun <K : Comparable<@UnsafeVariance K>, V> invoke(): Map<K, V> = Map()
     }
 }

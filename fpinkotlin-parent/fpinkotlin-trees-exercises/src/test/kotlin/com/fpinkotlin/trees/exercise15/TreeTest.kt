@@ -6,7 +6,7 @@ import com.fpinkotlin.trees.exercise15.Tree.Companion.balance
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 
-class TreeTest: StringSpec() {
+class TreeTest : StringSpec() {
 
 
     init {

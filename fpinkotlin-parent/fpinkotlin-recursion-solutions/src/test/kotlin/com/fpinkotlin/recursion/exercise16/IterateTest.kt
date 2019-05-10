@@ -11,7 +11,7 @@ class IterateTest : StringSpec() {
 
         "iterate" {
             forAll(Gen.choose(0, 1000), Gen.choose(0, 1000)) { a: Int, b: Int ->
-                a > b || iterate(a, { x -> x + 1}, b - a)  == (a until b).toList()
+                a > b || iterate(a, { x -> x + 1 }, b - a) == (a until b).toList()
             }
         }
     }

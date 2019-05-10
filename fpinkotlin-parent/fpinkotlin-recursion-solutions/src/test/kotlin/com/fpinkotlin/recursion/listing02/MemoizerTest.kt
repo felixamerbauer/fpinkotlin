@@ -13,7 +13,7 @@ class FiboCorecursiveTest : StringSpec() {
 
         "fibonacci" {
             forAll(100, Gen.choose(3, 300)) { n ->
-                fib(n) == fib(n - 1) + fib (n - 2)
+                fib(n) == fib(n - 1) + fib(n - 2)
             }
         }
     }

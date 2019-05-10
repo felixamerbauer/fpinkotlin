@@ -15,21 +15,21 @@ sealed class List<A> {
 
     fun dropWhile(p: (A) -> Boolean): List<A> = dropWhile(this, p)
 
-    internal object Nil: List<Nothing>() {
+    internal object Nil : List<Nothing>() {
 
         override fun isEmpty() = true
 
         override fun toString(): String = "[NIL]"
     }
 
-    internal class Cons<A>(val head: A, val tail: List<A>): List<A>() {
+    internal class Cons<A>(val head: A, val tail: List<A>) : List<A>() {
 
         override fun isEmpty() = false
 
         override fun toString(): String = "[${toString("", this)}NIL]"
 
         private tailrec fun toString(acc: String, list: List<A>): String = when (list) {
-            Nil  -> acc
+            Nil -> acc
             is Cons -> toString("$acc${list.head}, ", list.tail)
         }
     }
@@ -47,7 +47,7 @@ sealed class List<A> {
         }
 
         operator fun <A> invoke(vararg az: A): List<A> =
-            az.foldRight(Nil as List<A>) { a: A, list: List<A> -> Cons(a, list) }
+                az.foldRight(Nil as List<A>) { a: A, list: List<A> -> Cons(a, list) }
     }
 }
 

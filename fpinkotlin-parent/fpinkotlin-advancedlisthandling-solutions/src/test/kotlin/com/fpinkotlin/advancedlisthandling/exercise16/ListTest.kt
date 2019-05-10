@@ -8,7 +8,7 @@ import java.util.*
 import kotlin.math.max
 import kotlin.math.min
 
-class ListTest: StringSpec() {
+class ListTest : StringSpec() {
 
     private val random = Random()
 
@@ -27,7 +27,7 @@ class ListTest: StringSpec() {
     }
 }
 
-class IntListGenerator(private val min: Int = Int.MIN_VALUE, private val max: Int = Int.MAX_VALUE): Gen<Pair<Array<Int>, List<Int>>> {
+class IntListGenerator(private val min: Int = Int.MIN_VALUE, private val max: Int = Int.MAX_VALUE) : Gen<Pair<Array<Int>, List<Int>>> {
 
     override fun constants(): Iterable<Pair<Array<Int>, List<Int>>> =
             Gen.list(Gen.choose(min, max)).constants().map { list -> list.toTypedArray().let { Pair(it, List(*(it))) } }

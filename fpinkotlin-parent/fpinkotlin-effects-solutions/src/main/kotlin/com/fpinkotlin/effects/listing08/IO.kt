@@ -11,16 +11,16 @@ sealed class IO<out A> {
 
     operator fun invoke(io: IO<@UnsafeVariance A>): A {
         tailrec fun invokeHelper(io: IO<A>): A = when (io) {
-            is Return  -> io.value
+            is Return -> io.value
             is Suspend -> io.resume()
-            else       -> {
+            else -> {
                 val ct = io as Continue<A, A>
                 val sub = ct.sub
                 val f = ct.f
                 when (sub) {
-                    is Return  -> invokeHelper(f(sub.value))
+                    is Return -> invokeHelper(f(sub.value))
                     is Suspend -> invokeHelper(f(sub.resume()))
-                    else       -> {
+                    else -> {
                         val ct2 = sub as Continue<A, A>
                         val sub2 = ct2.sub
                         val f2 = ct2.f
@@ -48,12 +48,12 @@ sealed class IO<out A> {
         fun modify(f: (A) -> A): IO<A> = get().flatMap { a -> set(f(a)) }
     }
 
-    internal class Return<out A>(val value: A): IO<A>()
+    internal class Return<out A>(val value: A) : IO<A>()
 
-    internal class Suspend<out A>(val resume: () -> A): IO<A>()
+    internal class Suspend<out A>(val resume: () -> A) : IO<A>()
 
     internal class Continue<A, out B>(val sub: IO<A>,
-                                      val f: (A) ->  IO<B>): IO<A>()
+                                      val f: (A) -> IO<B>) : IO<A>()
 
     companion object {
 
@@ -68,7 +68,7 @@ sealed class IO<out A> {
                 iot.flatMap { f(it) }
                         .flatMap { ok ->
                             when {
-                                ok   -> doWhile(iot, f)
+                                ok -> doWhile(iot, f)
                                 else -> empty
                             }
                         }
@@ -76,12 +76,12 @@ sealed class IO<out A> {
         fun <A> repeat(n: Int, io: IO<A>): IO<Unit> = forEach(fill(n, Lazy { io })) { skip(it) }
 
         fun <A, B> forever(ioa: IO<A>): IO<B> =
-            { forever<A, B>(ioa) }.let { ioa.flatMap { it() } }
+                { forever<A, B>(ioa) }.let { ioa.flatMap { it() } }
 
         fun <A, B> fold(s: Stream<A>, z: B, f: (B) -> (A) -> IO<B>): IO<B> = when {
             s.isEmpty() -> unit(z)
-            else        -> f(z)(s.head().getOrElse { throw IllegalStateException() })
-                .flatMap { zz -> fold(s.tail().getOrElse { throw IllegalStateException() }, zz, f) }
+            else -> f(z)(s.head().getOrElse { throw IllegalStateException() })
+                    .flatMap { zz -> fold(s.tail().getOrElse { throw IllegalStateException() }, zz, f) }
         }
 
         fun <A, B> changeTo(a: IO<A>, b: B): IO<B> = a.map { b }
@@ -90,7 +90,7 @@ sealed class IO<out A> {
 
         private fun <A, B> fold2(s: Stream<A>, z: B, f: (B) -> (A) -> IO<B>): IO<Unit> = skip(fold(s, z, f))
 
-        internal fun <A> forEach(s: Stream<A>, f: (A) -> IO<Unit>): IO<Unit> = fold2(s, Unit) {  { a -> skip(f(a)) } }
+        internal fun <A> forEach(s: Stream<A>, f: (A) -> IO<Unit>): IO<Unit> = fold2(s, Unit) { { a -> skip(f(a)) } }
 
         fun <A> sequence(stream: Stream<IO<A>>): IO<Unit> = forEach(stream) { skip(it) }
 
@@ -98,7 +98,7 @@ sealed class IO<out A> {
         internal fun <A> sequence(vararg array: IO<A>): IO<Unit> = sequence(Stream(array))
 
         internal fun <A> condition(b: Boolean, sIoa: () -> IO<A>): IO<Boolean> = when {
-            b    -> changeTo(sIoa(), true)
+            b -> changeTo(sIoa(), true)
             else -> unit(false)
         }
 

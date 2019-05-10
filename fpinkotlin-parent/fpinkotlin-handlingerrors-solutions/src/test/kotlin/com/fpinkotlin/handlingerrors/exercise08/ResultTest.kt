@@ -4,7 +4,7 @@ package com.fpinkotlin.handlingerrors.exercise08
 import io.kotlintest.properties.forAll
 import io.kotlintest.specs.StringSpec
 
-class ResultTest: StringSpec() {
+class ResultTest : StringSpec() {
 
     init {
 

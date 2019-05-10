@@ -17,7 +17,7 @@ sealed class Option<out A> {
         is Some -> value
     }
 
-    internal object None: Option<Nothing>() {
+    internal object None : Option<Nothing>() {
 
         override fun isEmpty() = true
 

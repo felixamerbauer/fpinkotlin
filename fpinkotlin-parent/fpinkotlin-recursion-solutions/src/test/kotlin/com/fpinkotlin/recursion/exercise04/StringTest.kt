@@ -10,7 +10,7 @@ class StringTest : StringSpec() {
 
         "string" {
             forAll(CharKListGenerator()) { list ->
-                string(list) == list.toCharArray().fold("") { s, c -> s + c}
+                string(list) == list.toCharArray().fold("") { s, c -> s + c }
             }
         }
     }

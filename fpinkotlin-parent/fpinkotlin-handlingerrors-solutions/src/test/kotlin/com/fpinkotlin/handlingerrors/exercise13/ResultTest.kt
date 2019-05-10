@@ -4,7 +4,7 @@ package com.fpinkotlin.handlingerrors.exercise13
 import io.kotlintest.properties.forAll
 import io.kotlintest.specs.StringSpec
 
-class ResultTest: StringSpec() {
+class ResultTest : StringSpec() {
 
     init {
 
@@ -16,8 +16,8 @@ class ResultTest: StringSpec() {
             }
             forAll { x: Int, y: Int ->
                 lift2(f)(Result(x))(Result(y)).toString() ==
-                    if (x <= y) Result(f(x)(y)).toString()
-                    else Result.failure<Int>("A is to big").toString()
+                        if (x <= y) Result(f(x)(y)).toString()
+                        else Result.failure<Int>("A is to big").toString()
             }
         }
 
@@ -31,8 +31,8 @@ class ResultTest: StringSpec() {
             }
             forAll { x: Int, y: Int, z: Int ->
                 lift3(f)(Result(x))(Result(y))(Result(z)).toString() ==
-                    if (x <= y) Result(f(x)(y)(z)).toString()
-                    else Result.failure<Int>("A is to big").toString()
+                        if (x <= y) Result(f(x)(y)(z)).toString()
+                        else Result.failure<Int>("A is to big").toString()
             }
         }
     }

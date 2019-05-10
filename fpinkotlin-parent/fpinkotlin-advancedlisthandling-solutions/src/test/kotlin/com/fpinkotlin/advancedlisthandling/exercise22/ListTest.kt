@@ -6,7 +6,7 @@ import io.kotlintest.specs.StringSpec
 import java.util.*
 
 
-class ListTest: StringSpec() {
+class ListTest : StringSpec() {
 
     private val random = Random()
 
@@ -14,7 +14,7 @@ class ListTest: StringSpec() {
 
         "splitListAt" {
             forAll(IntListGenerator()) { (_, second) ->
-                val splitPosition = if (second.length() == 0) 0 else  random.nextInt(second.length())
+                val splitPosition = if (second.length() == 0) 0 else random.nextInt(second.length())
                 val result = second.splitListAt(splitPosition)
                 result.flatMap { it }.toString() == second.toString()
             }
@@ -30,7 +30,7 @@ class ListTest: StringSpec() {
     }
 }
 
-class IntListGenerator(private val min: Int = Int.MIN_VALUE, private val max: Int = Int.MAX_VALUE): Gen<Pair<Array<Int>, List<Int>>> {
+class IntListGenerator(private val min: Int = Int.MIN_VALUE, private val max: Int = Int.MAX_VALUE) : Gen<Pair<Array<Int>, List<Int>>> {
 
     override fun constants(): Iterable<Pair<Array<Int>, List<Int>>> =
             Gen.list(Gen.choose(min, max)).constants().map { list -> list.toTypedArray().let { Pair(it, List(*(it))) } }

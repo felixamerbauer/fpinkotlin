@@ -5,7 +5,7 @@ import io.kotlintest.properties.Gen
 import io.kotlintest.properties.forAll
 import io.kotlintest.specs.StringSpec
 
-class StreamTest: StringSpec() {
+class StreamTest : StringSpec() {
 
     init {
 
@@ -16,8 +16,9 @@ class StreamTest: StringSpec() {
                     incCalls++
                     return i + 1
                 }
+
                 val list = range(0, a).map { it * 2 }
-                val stream = Stream.iterate(Lazy{ inc(-1) }, ::inc).takeWhileViaFoldRight { it < a }.map { it * 2 }
+                val stream = Stream.iterate(Lazy { inc(-1) }, ::inc).takeWhileViaFoldRight { it < a }.map { it * 2 }
                 val evaluated = incCalls
                 val result1 = stream.toList().toString()
                 val result2 = stream.toList().toString()

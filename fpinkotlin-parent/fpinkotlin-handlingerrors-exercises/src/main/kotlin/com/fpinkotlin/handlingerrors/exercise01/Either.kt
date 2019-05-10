@@ -4,7 +4,7 @@ sealed class Either<out E, out A> {
 
     abstract fun <B> map(f: (A) -> B): Either<E, B>
 
-    internal class Left<out E, out A>(private val value: E): Either<E, A>() {
+    internal class Left<out E, out A>(private val value: E) : Either<E, A>() {
 
         override fun <B> map(f: (A) -> B): Either<E, B> = TODO("map")
 

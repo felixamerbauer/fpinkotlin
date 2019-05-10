@@ -16,14 +16,14 @@ sealed class List<out A> {
 
     fun getAt(index: Int): Result<A> {
         tailrec fun <A> getAt(list: List<A>, index: Int): Result<A> =
-            when (list) {
-                Nil -> Result.failure("Dead code. Should never execute.")
-                is Cons ->
-                    if (index == 0)
-                        Result(list.head)
-                    else
-                        getAt(list.tail, index - 1)
-            }
+                when (list) {
+                    Nil -> Result.failure("Dead code. Should never execute.")
+                    is Cons ->
+                        if (index == 0)
+                            Result(list.head)
+                        else
+                            getAt(list.tail, index - 1)
+                }
         return if (index < 0 || index >= length())
             Result.failure("Index out of bound")
         else
@@ -31,28 +31,28 @@ sealed class List<out A> {
     }
 
     fun getAtViaFoldLeft(index: Int): Result<A> =
-        Pair(Result.failure<A>("Index out of bound"), index).let {
-            if (index < 0 || index >= length())
-                it
-            else
-                foldLeft(it) { ta ->
-                    { a ->
-                        if (ta.second < 0)
-                            ta
-                        else
-                            Pair(Result(a), ta.second - 1)
+            Pair(Result.failure<A>("Index out of bound"), index).let {
+                if (index < 0 || index >= length())
+                    it
+                else
+                    foldLeft(it) { ta ->
+                        { a ->
+                            if (ta.second < 0)
+                                ta
+                            else
+                                Pair(Result(a), ta.second - 1)
+                        }
                     }
-                }
-        }.first
+            }.first
 
     fun <A1, A2> unzip(f: (A) -> Pair<A1, A2>): Pair<List<A1>, List<A2>> =
-        this.coFoldRight(Pair(Nil, Nil)) { a ->
-            { listPair: Pair<List<A1>, List<A2>> ->
-                f(a).let {
-                    Pair(listPair.first.cons(it.first), listPair.second.cons(it.second))
+            this.coFoldRight(Pair(Nil, Nil)) { a ->
+                { listPair: Pair<List<A1>, List<A2>> ->
+                    f(a).let {
+                        Pair(listPair.first.cons(it.first), listPair.second.cons(it.second))
+                    }
                 }
             }
-        }
 
     fun lastSafe(): Result<A> =
             foldLeft(Result()) { _: Result<A> ->
@@ -82,7 +82,7 @@ sealed class List<out A> {
 
     fun <B> foldLeft(identity: B, f: (B) -> (A) -> B): B = foldLeft(identity, this, f)
 
-    fun length(): Int = foldLeft(0) { { _ -> it + 1} }
+    fun length(): Int = foldLeft(0) { { _ -> it + 1 } }
 
     fun <B> foldRightViaFoldLeft(identity: B, f: (A) -> (B) -> B): B =
             this.reverse().foldLeft(identity) { x -> { y -> f(y)(x) } }
@@ -95,7 +95,7 @@ sealed class List<out A> {
 
     fun filter(p: (A) -> Boolean): List<A> = flatMap { a -> if (p(a)) List(a) else Nil }
 
-    internal object Nil: List<Nothing>() {
+    internal object Nil : List<Nothing>() {
 
         override fun headSafe(): Result<Nothing> = Result()
 
@@ -109,7 +109,7 @@ sealed class List<out A> {
     }
 
     internal class Cons<out A>(internal val head: A,
-                               internal val tail: List<A>): List<A>() {
+                               internal val tail: List<A>) : List<A>() {
 
         override fun headSafe(): Result<A> = Result(head)
 
@@ -122,7 +122,7 @@ sealed class List<out A> {
         override fun toString(): String = "[${toString("", this)}NIL]"
 
         private tailrec fun toString(acc: String, list: List<A>): String = when (list) {
-            Nil  -> acc
+            Nil -> acc
             is Cons -> toString("$acc${list.head}, ", list.tail)
         }
     }
@@ -179,12 +179,12 @@ fun triple(list: List<Int>): List<Int> =
         List.foldRight(list, List()) { h -> { t: List<Int> -> t.cons(h * 3) } }
 
 fun doubleToString(list: List<Double>): List<String> =
-        List.foldRight(list, List())  { h -> { t: List<String> -> t.cons(h.toString()) } }
+        List.foldRight(list, List()) { h -> { t: List<String> -> t.cons(h.toString()) } }
 
 tailrec fun <A> lastSafe(list: List<A>): Result<A> = when (list) {
-    List.Nil  -> Result()
+    List.Nil -> Result()
     is List.Cons<A> -> when (list.tail) {
-        List.Nil  -> Result(list.head)
+        List.Nil -> Result(list.head)
         is List.Cons -> lastSafe(list.tail)
     }
 }
@@ -193,22 +193,22 @@ fun <A> flattenResult(list: List<Result<A>>): List<A> =
         list.flatMap { ra -> ra.map { List(it) }.getOrElse(List()) }
 
 fun <A> sequenceLeft(list: List<Result<A>>): Result<List<A>> =
-    list.foldLeft(Result(List())) { x: Result<List<A>> ->
-        { y -> map2(y, x) { a -> { b: List<A> -> b.cons(a) } } }
-    }.map { it.reverse() }
+        list.foldLeft(Result(List())) { x: Result<List<A>> ->
+            { y -> map2(y, x) { a -> { b: List<A> -> b.cons(a) } } }
+        }.map { it.reverse() }
 
 fun <A> sequence2(list: List<Result<A>>): Result<List<A>> =
-    list.filter{ !it.isEmpty() }.foldRight(Result(List())) { x ->
-        { y: Result<List<A>> -> map2(x, y) { a -> { b: List<A> -> b.cons(a) } } }
-    }
+        list.filter { !it.isEmpty() }.foldRight(Result(List())) { x ->
+            { y: Result<List<A>> -> map2(x, y) { a -> { b: List<A> -> b.cons(a) } } }
+        }
 
 fun <A, B> traverse(list: List<A>, f: (A) -> Result<B>): Result<List<B>> =
-    list.foldRight(Result(List())) { x ->
-        { y: Result<List<B>> -> map2(f(x), y) { a -> { b: List<B> -> b.cons(a) } } }
-    }
+        list.foldRight(Result(List())) { x ->
+            { y: Result<List<B>> -> map2(f(x), y) { a -> { b: List<B> -> b.cons(a) } } }
+        }
 
 fun <A> sequence(list: List<Result<A>>): Result<List<A>> =
-                                traverse(list) { x: Result<A> -> x }
+        traverse(list) { x: Result<A> -> x }
 
 fun <A, B, C> zipWith(list1: List<A>,
                       list2: List<B>,

@@ -9,11 +9,11 @@ fun main(args: Array<String>) {
     val inverse: (Int) -> Result<Double> = { x ->
         when {
             x != 0 -> Result(1.toDouble() / x)
-            else   -> Result.failure("Division by 0")
+            else -> Result.failure("Division by 0")
         }
     }
     val showResult: (Double) -> Unit = ::println
-    val showError: (RuntimeException) -> Unit = { println("Error - ${it.message}")}
+    val showError: (RuntimeException) -> Unit = { println("Error - ${it.message}") }
 
     val rt1 = ra.flatMap(inverse)
     val rt2 = rb.flatMap(inverse)

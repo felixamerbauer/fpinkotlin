@@ -4,7 +4,7 @@ package com.fpinkotlin.trees.exercise09
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 
-class TreeTest: StringSpec() {
+class TreeTest : StringSpec() {
 
     private val tree = Tree(4, 2, 1, 3, 6, 5, 7)
 

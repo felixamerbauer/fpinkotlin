@@ -7,7 +7,7 @@ import com.fpinkotlin.effects.listing03.AbstractReader
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
-class ConsoleReader(reader: BufferedReader): AbstractReader(reader) {
+class ConsoleReader(reader: BufferedReader) : AbstractReader(reader) {
 
     override fun readString(message: String): Result<Pair<String, Input>> {
         print("$message ")

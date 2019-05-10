@@ -4,7 +4,7 @@ import com.fpinkotlin.common.List
 import com.fpinkotlin.common.Result
 import com.fpinkotlin.common.sequence
 
-class Map<out K: Comparable<@UnsafeVariance K>, V>(private val delegate: Tree<MapEntry<Int, List<Pair<K, V>>>> = Tree()) {
+class Map<out K : Comparable<@UnsafeVariance K>, V>(private val delegate: Tree<MapEntry<Int, List<Pair<K, V>>>> = Tree()) {
 
     private fun getAll(key: @UnsafeVariance K): Result<List<Pair<K, V>>> =
             delegate[MapEntry(key.hashCode())]
@@ -44,7 +44,7 @@ class Map<out K: Comparable<@UnsafeVariance K>, V>(private val delegate: Tree<Ma
                 list.exists { pair ->
                     pair.first == key
                 }
-            }.getOrElse( false)
+            }.getOrElse(false)
 
     operator fun get(key: @UnsafeVariance K): Result<Pair<K, V>> =
             getAll(key).flatMap { list ->
@@ -56,7 +56,7 @@ class Map<out K: Comparable<@UnsafeVariance K>, V>(private val delegate: Tree<Ma
     fun <B> foldLeft(identity: B, f: (B) -> (MapEntry<@UnsafeVariance K, V>) -> B, g: (B) -> (B) -> B): B =
             delegate.foldLeft(identity, { b ->
                 { me: MapEntry<Int, List<Pair<K, V>>> ->
-//                    val x: Result<List<Pair<K, V>>> = me.value
+                    //                    val x: Result<List<Pair<K, V>>> = me.value
 //                    val y: Result<List<MapEntry<K, V>>> = x.map { it.map { MapEntry.of(it.first, it.second) } }
 //                    y.map { g(b)(it.foldLeft(identity, f)) }.getOrElse(identity)
                     me.value.map { it.map { MapEntry.of(it.first, it.second) } }
@@ -68,7 +68,7 @@ class Map<out K: Comparable<@UnsafeVariance K>, V>(private val delegate: Tree<Ma
             sequence(delegate.foldInReverseOrder(List<Result<V>>()) { lst1 ->
                 { me: MapEntry<Int, List<Pair<K, V>>> ->
                     { lst2: List<Result<V>> ->
-                        lst2.concat(lst1.concat(me.value.map{ it.map { Result(it.second) } }.getOrElse(List())))
+                        lst2.concat(lst1.concat(me.value.map { it.map { Result(it.second) } }.getOrElse(List())))
                     }
                 }
             }).getOrElse(List())
@@ -77,6 +77,6 @@ class Map<out K: Comparable<@UnsafeVariance K>, V>(private val delegate: Tree<Ma
 
     companion object {
 
-        operator fun <K: Comparable<@UnsafeVariance K>, V> invoke(): Map<K, V> = Map()
+        operator fun <K : Comparable<@UnsafeVariance K>, V> invoke(): Map<K, V> = Map()
     }
 }

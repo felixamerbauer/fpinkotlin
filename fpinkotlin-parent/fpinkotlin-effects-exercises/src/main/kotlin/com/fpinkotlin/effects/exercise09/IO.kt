@@ -10,11 +10,11 @@ class IO<out A>(private val f: () -> A) {
 
     operator fun invoke() = f()
 
-    fun <B> map (g: (A) -> B): IO<B> = IO {
+    fun <B> map(g: (A) -> B): IO<B> = IO {
         g(this())
     }
 
-    fun <B> flatMap (g: (A) -> IO<B>): IO<B> = IO {
+    fun <B> flatMap(g: (A) -> IO<B>): IO<B> = IO {
         g(this())()
     }
 
@@ -24,9 +24,9 @@ class IO<out A>(private val f: () -> A) {
 
         operator fun <A> invoke(a: A): IO<A> = IO { a }
 
-        fun <A> repeat(n: Int, io: IO<A> ): IO<List<A>> =
+        fun <A> repeat(n: Int, io: IO<A>): IO<List<A>> =
                 Stream.fill(n, Lazy { io })
-                        .foldRight( Lazy { IO { List<A>() } }) { ioa ->
+                        .foldRight(Lazy { IO { List<A>() } }) { ioa ->
                             { sioLa ->
                                 map2(ioa, sioLa()) { a ->
                                     { la: List<A> -> cons(a, la) }
@@ -34,7 +34,7 @@ class IO<out A>(private val f: () -> A) {
                             }
                         }
 
-        fun <A, B, C> map2(ioa: IO<A>, iob: IO<B>, f: (A) ->  (B) -> C): IO<C> =
+        fun <A, B, C> map2(ioa: IO<A>, iob: IO<B>, f: (A) -> (B) -> C): IO<C> =
                 ioa.flatMap { a ->
                     iob.map { b ->
                         f(a)(b)
@@ -52,7 +52,7 @@ class IO<out A>(private val f: () -> A) {
             return ioa.flatMap { f(it) }
                     .flatMap { ok ->
                         when {
-                            ok   -> doWhile(ioa, f)
+                            ok -> doWhile(ioa, f)
                             else -> empty
                         }
                     }
@@ -66,7 +66,7 @@ class IO<out A>(private val f: () -> A) {
             return changeTo(a, Unit)
         }
 
-        fun <A, B> foldM_(s: Stream<A>, z: B, f:(B) -> (A) -> IO<B>): IO<Unit> {
+        fun <A, B> foldM_(s: Stream<A>, z: B, f: (B) -> (A) -> IO<B>): IO<Unit> {
             return skip(foldM(s, z, f))
         }
 
@@ -75,8 +75,10 @@ class IO<out A>(private val f: () -> A) {
                 IO(z)
             else
                 f(z)(s.head().getOrElse { throw IllegalStateException() })
-                        .flatMap { zz -> foldM(s.tail()
-                                .getOrElse { throw IllegalStateException() }, zz, f) }
+                        .flatMap { zz ->
+                            foldM(s.tail()
+                                    .getOrElse { throw IllegalStateException() }, zz, f)
+                        }
         }
 
         fun <A> forEach(s: Stream<A>, f: (A) -> IO<Unit>): IO<Unit> {

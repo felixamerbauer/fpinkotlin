@@ -27,7 +27,7 @@ sealed class Option<out A> {
         is Some -> value
     }
 
-    internal object None: Option<Nothing>() {
+    internal object None : Option<Nothing>() {
 
         override fun <B> map(f: (Nothing) -> B): Option<B> = None
 
@@ -82,23 +82,23 @@ val variance: (List<Double>) -> Option<Double> = { list ->
 }
 
 fun mean(list: List<Double>): Option<Double> =
-    when {
-        list.isEmpty() -> Option()
-        else -> Option(list.sum() / list.length())
-    }
+        when {
+            list.isEmpty() -> Option()
+            else -> Option(list.sum() / list.length())
+        }
 
 
 fun variance(list: List<Double>): Option<Double> =
-    mean(list).flatMap { m ->
-        mean(list.map { x ->
-            Math.pow((x - m), 2.0)
-        })
-    }
+        mean(list).flatMap { m ->
+            mean(list.map { x ->
+                Math.pow((x - m), 2.0)
+            })
+        }
 
 
 val abs: (Double) -> Double = { d -> if (d > 0) d else -d }
 
-val absO: (Option<Double>) -> Option<Double>  = lift { abs(it) }
+val absO: (Option<Double>) -> Option<Double> = lift { abs(it) }
 
 fun <A, B> lift(f: (A) -> B): (Option<A>) -> Option<B> = {
     try {
@@ -139,7 +139,7 @@ fun <A, B, C, D> map3(oa: Option<A>,
                       f: (A) -> (B) -> (C) -> D): Option<D> =
         oa.flatMap { a -> ob.flatMap { b -> oc.map { c -> f(a)(b)(c) } } }
 
-fun <A, B> traverse(list: List<A> , f: (A) -> Option<B>): Option<List<B>> =
+fun <A, B> traverse(list: List<A>, f: (A) -> Option<B>): Option<List<B>> =
         list.foldRight(Option(List())) { x ->
             { y: Option<List<B>> ->
                 map2(f(x), y) { a ->
@@ -151,4 +151,4 @@ fun <A, B> traverse(list: List<A> , f: (A) -> Option<B>): Option<List<B>> =
         }
 
 fun <A> sequence(list: List<Option<A>>): Option<List<A>> =
-                            traverse(list) { x -> x }
+        traverse(list) { x -> x }

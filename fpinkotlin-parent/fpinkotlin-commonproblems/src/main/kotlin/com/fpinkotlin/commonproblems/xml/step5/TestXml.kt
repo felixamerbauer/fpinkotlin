@@ -11,22 +11,22 @@ fun getRootElementName(): ElementName = ElementName("staff") // Simulating a com
 fun getXmlFilePath(): FilePath = FilePath("/path/to/file.xml") // <- adjust path
 
 const val format = "First Name : %s\n" +
-    "\tLast Name : %s\n" +
-    "\tEmail : %s\n" +
-    "\tSalary : %s"
+        "\tLast Name : %s\n" +
+        "\tEmail : %s\n" +
+        "\tSalary : %s"
 
 private val elementNames =
-    List("firstName", "lastName", "email", "salary")
+        List("firstName", "lastName", "email", "salary")
 
 private fun processElement(element: Element): String =
-    String.format(format, *elementNames.map { element.getChildText(it) }
-        .toArrayList()
-        .toArray())
+        String.format(format, *elementNames.map { element.getChildText(it) }
+                .toArrayList()
+                .toArray())
 
 fun main(args: Array<String>) {
     val program = readXmlFile(::getXmlFilePath,
-                              ::getRootElementName,
-                              ::processElement,
-                              ::processList)
+            ::getRootElementName,
+            ::processElement,
+            ::processList)
     program()
 }

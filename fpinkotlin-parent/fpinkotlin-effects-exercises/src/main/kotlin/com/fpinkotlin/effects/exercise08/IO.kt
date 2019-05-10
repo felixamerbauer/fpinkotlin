@@ -7,11 +7,11 @@ class IO<out A>(private val f: () -> A) {
 
     operator fun invoke() = f()
 
-    fun <B> map (g: (A) -> B): IO<B> = IO {
+    fun <B> map(g: (A) -> B): IO<B> = IO {
         g(this())
     }
 
-    fun <B> flatMap (g: (A) -> IO<B>): IO<B> = IO {
+    fun <B> flatMap(g: (A) -> IO<B>): IO<B> = IO {
         g(this())()
     }
 
@@ -21,9 +21,9 @@ class IO<out A>(private val f: () -> A) {
 
         operator fun <A> invoke(a: A): IO<A> = IO { a }
 
-        fun <A> repeat(n: Int, io: IO<A> ): IO<List<A>> = TODO("repeat")
+        fun <A> repeat(n: Int, io: IO<A>): IO<List<A>> = TODO("repeat")
 
-        fun <A, B, C> map2(ioa: IO<A>, iob: IO<B>, f: (A) ->  (B) -> C): IO<C> = TODO("map2")
+        fun <A, B, C> map2(ioa: IO<A>, iob: IO<B>, f: (A) -> (B) -> C): IO<C> = TODO("map2")
     }
 }
 

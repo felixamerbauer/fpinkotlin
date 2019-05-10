@@ -6,13 +6,13 @@ import io.kotlintest.properties.forAll
 import io.kotlintest.specs.StringSpec
 import java.util.*
 
-class ListTest: StringSpec() {
+class ListTest : StringSpec() {
 
     init {
 
         "foldLeft" {
             forAll(IntListGenerator()) { (_, second) ->
-                second.foldLeft(0) { a -> { b -> a + b } } ==  second.foldRight(0) { a -> { b -> a + b } }
+                second.foldLeft(0) { a -> { b -> a + b } } == second.foldRight(0) { a -> { b -> a + b } }
             }
         }
 
@@ -36,16 +36,16 @@ class ListTest: StringSpec() {
     }
 }
 
-class IntListGenerator(private val min: Int = Int.MIN_VALUE, private val max: Int = Int.MAX_VALUE): Gen<Pair<Array<Int>, List<Int>>> {
+class IntListGenerator(private val min: Int = Int.MIN_VALUE, private val max: Int = Int.MAX_VALUE) : Gen<Pair<Array<Int>, List<Int>>> {
 
     override fun constants(): Iterable<Pair<Array<Int>, List<Int>>> =
-        Gen.list(Gen.choose(min, max)).constants().map { list -> list.toTypedArray().let { Pair(it, List(*(it))) } }
+            Gen.list(Gen.choose(min, max)).constants().map { list -> list.toTypedArray().let { Pair(it, List(*(it))) } }
 
     override fun random(): Sequence<Pair<Array<Int>, List<Int>>> =
-        Gen.list(Gen.choose(min, max)).random().map { list -> list.toTypedArray().let { Pair(it, List(*(it))) } }
+            Gen.list(Gen.choose(min, max)).random().map { list -> list.toTypedArray().let { Pair(it, List(*(it))) } }
 }
 
-class DoubleListGenerator(val min: Double = Double.MIN_VALUE, val max: Double = Double.MAX_VALUE): Gen<Pair<Array<Double>, List<Double>>> {
+class DoubleListGenerator(val min: Double = Double.MIN_VALUE, val max: Double = Double.MAX_VALUE) : Gen<Pair<Array<Double>, List<Double>>> {
 
     private fun choose(): Gen<Double> {
         assert(min < max) { "min must be < max" }
@@ -55,18 +55,18 @@ class DoubleListGenerator(val min: Double = Double.MIN_VALUE, val max: Double = 
             override fun constants(): Iterable<Double> = emptyList()
 
             override fun random(): Sequence<Double> =
-                generateSequence { random.nextDouble() }.filter { it in min..max }
+                    generateSequence { random.nextDouble() }.filter { it in min..max }
         }
     }
 
     private inline fun <reified T> toPair(list: Collection<T>): Pair<Array<T>, List<T>> =
-        list.toTypedArray().let {
-            Pair(it, List(*(it)))
-        }
+            list.toTypedArray().let {
+                Pair(it, List(*(it)))
+            }
 
     override fun constants(): Iterable<Pair<Array<Double>, List<Double>>> =
-        Gen.list(choose()).constants().map { toPair(it) }
+            Gen.list(choose()).constants().map { toPair(it) }
 
     override fun random(): Sequence<Pair<Array<Double>, List<Double>>> =
-        Gen.list(choose()).random().map { toPair(it) }
+            Gen.list(choose()).random().map { toPair(it) }
 }

@@ -17,7 +17,7 @@ sealed class Stream<out A> {
     abstract fun takeWhile(p: (A) -> Boolean): Stream<A>
 
     fun <B> foldRight(z: Lazy<B>,
-                               f: (A) -> (Lazy<B>) -> B): B = TODO("foldRight")
+                      f: (A) -> (Lazy<B>) -> B): B = TODO("foldRight")
 
     fun exists(p: (A) -> Boolean): Boolean = exists(this, p)
 
@@ -27,7 +27,7 @@ sealed class Stream<out A> {
 
     fun dropAtMost(n: Int): Stream<A> = dropAtMost(n, this)
 
-    private object Empty: Stream<Nothing>() {
+    private object Empty : Stream<Nothing>() {
 
         override fun takeWhile(p: (Nothing) -> Boolean): Stream<Nothing> = this
 
@@ -41,8 +41,8 @@ sealed class Stream<out A> {
 
     }
 
-    private class Cons<out A> (internal val hd: Lazy<A>,
-                               internal val tl: Lazy<Stream<A>>) : Stream<A>() {
+    private class Cons<out A>(internal val hd: Lazy<A>,
+                              internal val tl: Lazy<Stream<A>>) : Stream<A>() {
 
         override fun takeWhile(p: (A) -> Boolean): Stream<A> = when {
             p(hd()) -> cons(hd, Lazy { tl().takeWhile(p) })
@@ -72,15 +72,15 @@ sealed class Stream<out A> {
         fun <A> repeat(f: () -> A): Stream<A> = cons(Lazy { f() }, Lazy { repeat(f) })
 
         tailrec fun <A> dropWhile(stream: Stream<A>,
-                              p: (A) -> Boolean): Stream<A> = when (stream) {
-                Empty -> stream
-                is Cons -> when {
-                    p(stream.hd()) -> dropWhile(stream.tl(), p)
-                    else -> stream
-                }
+                                  p: (A) -> Boolean): Stream<A> = when (stream) {
+            Empty -> stream
+            is Cons -> when {
+                p(stream.hd()) -> dropWhile(stream.tl(), p)
+                else -> stream
+            }
         }
 
-        tailrec fun <A> dropAtMost(n: Int, stream: Stream<A>): Stream<A> =  when {
+        tailrec fun <A> dropAtMost(n: Int, stream: Stream<A>): Stream<A> = when {
             n > 0 -> when (stream) {
                 Empty -> stream
                 is Cons -> dropAtMost(n - 1, stream.tl())
@@ -88,8 +88,8 @@ sealed class Stream<out A> {
             else -> stream
         }
 
-        fun <A> toList(stream: Stream<A>) : List<A> {
-            tailrec fun <A> toList(list: List<A>, stream: Stream<A>) : List<A> = when (stream) {
+        fun <A> toList(stream: Stream<A>): List<A> {
+            tailrec fun <A> toList(list: List<A>, stream: Stream<A>): List<A> = when (stream) {
                 Empty -> list
                 is Cons -> toList(list.cons(stream.hd()), stream.tl())
             }
@@ -101,12 +101,12 @@ sealed class Stream<out A> {
         fun <A> iterate(seed: A, f: (A) -> A): Stream<A> = iterate(Lazy { seed }, f)
 
         tailrec fun <A> exists(stream: Stream<A>, p: (A) -> Boolean): Boolean =
-            when (stream) {
-                Empty -> false
-                is Cons  -> when {
-                    p(stream.hd()) -> true
-                    else           -> exists(stream.tl(), p)
+                when (stream) {
+                    Empty -> false
+                    is Cons -> when {
+                        p(stream.hd()) -> true
+                        else -> exists(stream.tl(), p)
+                    }
                 }
-            }
     }
 }

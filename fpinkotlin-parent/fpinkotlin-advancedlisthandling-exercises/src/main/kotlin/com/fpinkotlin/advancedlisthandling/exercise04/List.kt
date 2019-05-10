@@ -46,7 +46,7 @@ sealed class List<out A> {
 
     fun <B> foldLeft(identity: B, f: (B) -> (A) -> B): B = foldLeft(identity, this, f)
 
-    fun length(): Int = foldLeft(0) { { _ -> it + 1} }
+    fun length(): Int = foldLeft(0) { { _ -> it + 1 } }
 
     fun <B> foldRightViaFoldLeft(identity: B, f: (A) -> (B) -> B): B =
             this.reverse().foldLeft(identity) { x -> { y -> f(y)(x) } }
@@ -59,7 +59,7 @@ sealed class List<out A> {
 
     fun filter(p: (A) -> Boolean): List<A> = flatMap { a -> if (p(a)) List(a) else Nil }
 
-    internal object Nil: List<Nothing>() {
+    internal object Nil : List<Nothing>() {
 
         override val length = 0
 
@@ -71,7 +71,7 @@ sealed class List<out A> {
     }
 
     internal class Cons<out A>(internal val head: A,
-                               internal val tail: List<A>): List<A>() {
+                               internal val tail: List<A>) : List<A>() {
 
         override val length = tail.length + 1
 
@@ -82,7 +82,7 @@ sealed class List<out A> {
         override fun toString(): String = "[${toString("", this)}NIL]"
 
         private tailrec fun toString(acc: String, list: List<A>): String = when (list) {
-            Nil  -> acc
+            Nil -> acc
             is Cons -> toString("$acc${list.head}, ", list.tail)
         }
     }
@@ -138,12 +138,12 @@ fun triple(list: List<Int>): List<Int> =
         List.foldRight(list, List()) { h -> { t: List<Int> -> t.cons(h * 3) } }
 
 fun doubleToString(list: List<Double>): List<String> =
-        List.foldRight(list, List())  { h -> { t: List<String> -> t.cons(h.toString()) } }
+        List.foldRight(list, List()) { h -> { t: List<String> -> t.cons(h.toString()) } }
 
 tailrec fun <A> lastSafe(list: List<A>): Result<A> = when (list) {
-    List.Nil  -> Result()
+    List.Nil -> Result()
     is List.Cons<A> -> when (list.tail) {
-        List.Nil  -> Result(list.head)
+        List.Nil -> Result(list.head)
         is List.Cons -> lastSafe(list.tail)
     }
 }

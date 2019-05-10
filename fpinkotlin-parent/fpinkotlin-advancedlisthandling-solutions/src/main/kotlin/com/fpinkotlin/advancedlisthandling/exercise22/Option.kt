@@ -8,12 +8,12 @@ sealed class Option<out A> {
     abstract fun <B> map(f: (A) -> B): Option<B>
 
     fun <B> flatMap(f: (A) -> Option<B>): Option<B> = map(f).getOrElse(
-        None)
+            None)
 
     fun filter(p: (A) -> Boolean): Option<A> =
             flatMap { x -> if (p(x)) this else None }
 
-    internal object None: Option<Nothing>() {
+    internal object None : Option<Nothing>() {
 
         override fun <B> map(f: (Nothing) -> B): Option<B> = None
 
@@ -25,7 +25,7 @@ sealed class Option<out A> {
     internal class Some<out A>(internal val value: A) : Option<A>() {
 
         override fun <B> map(f: (A) -> B): Option<B> = Some(
-            f(value))
+                f(value))
 
         override fun isEmpty() = false
 
@@ -33,7 +33,7 @@ sealed class Option<out A> {
 
         override fun equals(other: Any?): Boolean = when (other) {
             is Some<*> -> value == other.value
-            else       -> false
+            else -> false
         }
 
         override fun hashCode(): Int = value?.hashCode() ?: 0
@@ -59,10 +59,10 @@ sealed class Option<out A> {
 }
 
 fun <A> Option<A>.getOrElse(default: A): A = Option.getOrElse(
-    this, default)
+        this, default)
 
 fun <A> Option<A>.getOrElse(default: () -> A): A = Option.getOrElse(
-    this, default)
+        this, default)
 
 fun <A> Option<A>.orElse(default: () -> Option<A>): Option<A> = map { this }.getOrElse(default)
 
@@ -95,7 +95,7 @@ val parseHex: (String) -> Int = parseWithRadix(16)
 fun abs(d: Double): Double = if (d > 0) d else -d
 
 fun abs0(od: Option<Double>): Option<Double> = lift(
-    ::abs)(od)
+        ::abs)(od)
 
 val upperOption: (Option<String>) -> Option<String> = lift { it.toUpperCase() }
 
@@ -112,7 +112,7 @@ fun <A, B, C, D> map3(oa: Option<A>,
                       f: (A) -> (B) -> (C) -> D): Option<D> =
         oa.flatMap { a -> ob.flatMap { b -> oc.map { c -> f(a)(b)(c) } } }
 
-fun <A, B> traverse_(list: List<A> , f: (A) -> Option<B>): Option<List<B>> =
+fun <A, B> traverse_(list: List<A>, f: (A) -> Option<B>): Option<List<B>> =
         list.foldRight(Option(List())) { x ->
             { y: Option<List<B>> ->
                 map2(f(x), y) { a ->

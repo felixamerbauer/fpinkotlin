@@ -6,7 +6,7 @@ import io.kotlintest.shouldThrow
 import io.kotlintest.specs.StringSpec
 import java.util.*
 
-class ListTest: StringSpec() {
+class ListTest : StringSpec() {
 
     private val random = Random()
 
@@ -16,7 +16,7 @@ class ListTest: StringSpec() {
             val i = random.nextInt()
             forAll(IntListGenerator()) { (first, second) ->
                 second.isEmpty() ||
-                second.setHead(i).toString() ==
+                        second.setHead(i).toString() ==
                         "[$i, ${first.joinToString(", ", "", ", NIL]").substringAfter(", ")}"
             }
         }
@@ -28,11 +28,11 @@ class ListTest: StringSpec() {
     }
 }
 
-class IntListGenerator(private val min: Int = Int.MIN_VALUE, private val max: Int = Int.MAX_VALUE): Gen<Pair<Array<Int>, List<Int>>> {
+class IntListGenerator(private val min: Int = Int.MIN_VALUE, private val max: Int = Int.MAX_VALUE) : Gen<Pair<Array<Int>, List<Int>>> {
 
     override fun constants(): Iterable<Pair<Array<Int>, List<Int>>> =
-        Gen.list(Gen.choose(min, max)).constants().map { list -> list.toTypedArray().let { Pair(it, List(*(it))) } }
+            Gen.list(Gen.choose(min, max)).constants().map { list -> list.toTypedArray().let { Pair(it, List(*(it))) } }
 
     override fun random(): Sequence<Pair<Array<Int>, List<Int>>> =
-        Gen.list(Gen.choose(min, max)).random().map { list -> list.toTypedArray().let { Pair(it, List(*(it))) } }
+            Gen.list(Gen.choose(min, max)).random().map { list -> list.toTypedArray().let { Pair(it, List(*(it))) } }
 }

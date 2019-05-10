@@ -5,7 +5,7 @@ class IO<out A>(private val f: () -> A) {
 
     operator fun invoke() = f()
 
-    fun <B> map (g: (A) -> B): IO<B> = IO {
+    fun <B> map(g: (A) -> B): IO<B> = IO {
         g(this())
     }
 

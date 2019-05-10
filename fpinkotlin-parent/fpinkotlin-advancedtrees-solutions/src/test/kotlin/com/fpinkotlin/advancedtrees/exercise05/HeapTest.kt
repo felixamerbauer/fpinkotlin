@@ -5,7 +5,7 @@ import com.fpinkotlin.common.List
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 
-class HeapTest: StringSpec() {
+class HeapTest : StringSpec() {
 
     init {
 

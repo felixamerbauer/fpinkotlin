@@ -4,17 +4,17 @@ import io.kotlintest.properties.Gen
 import io.kotlintest.properties.forAll
 import io.kotlintest.specs.StringSpec
 
-class MapTest: StringSpec() {
+class MapTest : StringSpec() {
 
     private val timeFactor = 500
 
     init {
 
         "testAddRemoveRandom" {
-            forAll( Gen.list(Gen.choose(1, 1000))) { list ->
+            forAll(Gen.list(Gen.choose(1, 1000))) { list ->
                 println(list)
                 val maxTime = 2L * log2nlz(list.size + 1) * timeFactor
-                val set = list.fold(setOf<Int>()) { s, t ->  s + t }
+                val set = list.fold(setOf<Int>()) { s, t -> s + t }
                 val time = System.currentTimeMillis()
                 val map = list.fold(Map<Int, String>()) { m, n ->
                     m + Pair(n, NumbersToEnglish.convertUS(n))

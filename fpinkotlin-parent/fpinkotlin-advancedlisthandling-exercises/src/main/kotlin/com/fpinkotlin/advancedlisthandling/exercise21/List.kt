@@ -24,18 +24,18 @@ sealed class List<out A> {
     fun forAll(p: (A) -> Boolean): Boolean = TODO("forAll")
 
     fun <B> groupBy(f: (A) -> B): Map<B, List<A>> =
-        reverse().foldLeft(mapOf()) { mt: Map<B, List<A>> ->
-            { t ->
-                f(t).let { mt + (it to (mt.getOrDefault(it, Nil)).cons(t)) }
+            reverse().foldLeft(mapOf()) { mt: Map<B, List<A>> ->
+                { t ->
+                    f(t).let { mt + (it to (mt.getOrDefault(it, Nil)).cons(t)) }
+                }
             }
-        }
 
     fun <B> groupByViaFoldRight(f: (A) -> B): Map<B, List<A>> =
-        foldRight(mapOf()) { t ->
-            {  mt: Map<B, List<A>> ->
-                f(t).let { mt + (it to (mt.getOrDefault(it, Nil)).cons(t)) }
+            foldRight(mapOf()) { t ->
+                { mt: Map<B, List<A>> ->
+                    f(t).let { mt + (it to (mt.getOrDefault(it, Nil)).cons(t)) }
+                }
             }
-        }
 
     fun splitAt(index: Int): Pair<List<A>, List<A>> {
         tailrec fun splitAt(acc: List<A>,
@@ -49,9 +49,9 @@ sealed class List<out A> {
                             splitAt(acc.cons(list.head), list.tail, i - 1)
                 }
         return when {
-            index < 0        -> splitAt(0)
+            index < 0 -> splitAt(0)
             index > length() -> splitAt(length())
-            else             -> splitAt(Nil, this.reverse(), this.length() - index)
+            else -> splitAt(Nil, this.reverse(), this.length() - index)
         }
     }
 
@@ -92,9 +92,9 @@ sealed class List<out A> {
     fun startsWith(sub: List<@UnsafeVariance A>): Boolean {
         tailrec fun startsWith(list: List<A>, sub: List<A>): Boolean =
                 when (sub) {
-                    Nil  -> true
+                    Nil -> true
                     is Cons -> when (list) {
-                        Nil  -> false
+                        Nil -> false
                         is Cons ->
                             if (list.head == sub.head)
                                 startsWith(list.tail, sub.tail)
@@ -140,7 +140,7 @@ sealed class List<out A> {
 
     fun <B> foldLeft(identity: B, f: (B) -> (A) -> B): B = foldLeft(identity, this, f)
 
-    fun length(): Int = foldLeft(0) { { _ -> it + 1} }
+    fun length(): Int = foldLeft(0) { { _ -> it + 1 } }
 
     fun <B> foldRightViaFoldLeft(identity: B, f: (A) -> (B) -> B): B =
             this.reverse().foldLeft(identity) { x -> { y -> f(y)(x) } }
@@ -153,7 +153,7 @@ sealed class List<out A> {
 
     fun filter(p: (A) -> Boolean): List<A> = flatMap { a -> if (p(a)) List(a) else Nil }
 
-    internal object Nil: List<Nothing>() {
+    internal object Nil : List<Nothing>() {
 
         override fun <B> foldLeft(identity: B, p: (B) -> Boolean, f: (B) -> (Nothing) -> B): B = identity
 
@@ -172,7 +172,7 @@ sealed class List<out A> {
     }
 
     internal class Cons<out A>(internal val head: A,
-                               internal val tail: List<A>): List<A>() {
+                               internal val tail: List<A>) : List<A>() {
 
         override fun <B> foldLeft(identity: B, p: (B) -> Boolean, f: (B) -> (A) -> B): B {
             fun foldLeft(acc: B, list: List<A>): B = when (list) {
@@ -209,7 +209,7 @@ sealed class List<out A> {
         override fun toString(): String = "[${toString("", this)}NIL]"
 
         private tailrec fun toString(acc: String, list: List<A>): String = when (list) {
-            Nil  -> acc
+            Nil -> acc
             is Cons -> toString("$acc${list.head}, ", list.tail)
         }
     }
@@ -266,12 +266,12 @@ fun triple(list: List<Int>): List<Int> =
         List.foldRight(list, List()) { h -> { t: List<Int> -> t.cons(h * 3) } }
 
 fun doubleToString(list: List<Double>): List<String> =
-        List.foldRight(list, List())  { h -> { t: List<String> -> t.cons(h.toString()) } }
+        List.foldRight(list, List()) { h -> { t: List<String> -> t.cons(h.toString()) } }
 
 tailrec fun <A> lastSafe(list: List<A>): Result<A> = when (list) {
-    List.Nil  -> Result()
+    List.Nil -> Result()
     is List.Cons<A> -> when (list.tail) {
-        List.Nil  -> Result(list.head)
+        List.Nil -> Result(list.head)
         is List.Cons -> lastSafe(list.tail)
     }
 }
@@ -286,7 +286,7 @@ fun <A> sequenceLeft(list: List<Result<A>>): Result<List<A>> =
         }.map { it.reverse() }
 
 fun <A> sequence2(list: List<Result<A>>): Result<List<A>> =
-        list.filter{ !it.isEmpty() }.foldRight(Result(List())) { x ->
+        list.filter { !it.isEmpty() }.foldRight(Result(List())) { x ->
             { y: Result<List<A>> ->
                 map2(x, y) { a -> { b: List<A> -> b.cons(a) } }
             }
@@ -331,7 +331,7 @@ fun <A, S> unfoldResult(z: S, getNext: (S) -> Result<Pair<A, S>>): Result<List<A
     tailrec fun unfold(acc: List<A>, z: S): Result<List<A>> {
         val next = getNext(z)
         return when (next) {
-            Result.Empty      -> Result(acc)
+            Result.Empty -> Result(acc)
             is Result.Failure -> Result.failure(next.exception)
             is Result.Success ->
                 unfold(acc.cons(next.value.first), next.value.second)

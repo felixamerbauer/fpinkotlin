@@ -6,7 +6,7 @@ import io.kotlintest.properties.Gen
 import io.kotlintest.properties.forAll
 import io.kotlintest.specs.StringSpec
 
-class StreamTest: StringSpec() {
+class StreamTest : StringSpec() {
 
     init {
 
@@ -17,8 +17,9 @@ class StreamTest: StringSpec() {
                     incCalls++
                     return i + 1
                 }
+
                 val stream = Stream.iterate(a, ::inc).takeAtMost(100)
-                val expected = range(a , a + 100).sum()
+                val expected = range(a, a + 100).sum()
                 val result = stream.foldRight(Lazy { 0 }) { x -> { y -> x + y() } }
                 expected == result
             }

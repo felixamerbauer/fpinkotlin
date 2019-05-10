@@ -15,7 +15,7 @@ sealed class Stream<out A> {
 
     fun dropAtMost(n: Int): Stream<A> = TODO("dropAtMost")
 
-    private object Empty: Stream<Nothing>() {
+    private object Empty : Stream<Nothing>() {
 
         override fun takeAtMost(n: Int): Stream<Nothing> = this
 
@@ -27,8 +27,8 @@ sealed class Stream<out A> {
 
     }
 
-    private class Cons<out A> (internal val hd: Lazy<A>,
-                               internal val tl: Lazy<Stream<A>>) : Stream<A>() {
+    private class Cons<out A>(internal val hd: Lazy<A>,
+                              internal val tl: Lazy<Stream<A>>) : Stream<A>() {
 
         override fun takeAtMost(n: Int): Stream<A> = when {
             n > 0 -> cons(hd, Lazy { tl().takeAtMost(n - 1) })

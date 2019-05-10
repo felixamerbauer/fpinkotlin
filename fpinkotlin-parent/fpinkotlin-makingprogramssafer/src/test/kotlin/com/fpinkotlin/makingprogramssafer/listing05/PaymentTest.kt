@@ -5,7 +5,7 @@ import io.kotlintest.properties.forAll
 import io.kotlintest.properties.generateInfiniteSequence
 import io.kotlintest.specs.StringSpec
 
-class PaymentTest: StringSpec() {
+class PaymentTest : StringSpec() {
 
     init {
 

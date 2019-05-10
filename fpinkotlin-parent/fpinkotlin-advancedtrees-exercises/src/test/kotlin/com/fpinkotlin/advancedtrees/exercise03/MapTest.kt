@@ -8,7 +8,7 @@ import com.fpinkotlin.common.sequence
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 
-class MapTest: StringSpec() {
+class MapTest : StringSpec() {
 
     init {
 

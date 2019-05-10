@@ -2,7 +2,7 @@ package com.fpinkotlin.advancedtrees.exercise02
 
 import com.fpinkotlin.common.Result
 
-class Map<out K: Comparable<@UnsafeVariance K>, V> {
+class Map<out K : Comparable<@UnsafeVariance K>, V> {
 
     operator fun plus(entry: Pair<@UnsafeVariance K, V>): Map<K, V> = TODO("plus")
 
@@ -20,6 +20,6 @@ class Map<out K: Comparable<@UnsafeVariance K>, V> {
 
     companion object {
 
-        operator fun <K: Comparable<@UnsafeVariance K>, V> invoke(): Map<K, V> = Map()
+        operator fun <K : Comparable<@UnsafeVariance K>, V> invoke(): Map<K, V> = Map()
     }
 }

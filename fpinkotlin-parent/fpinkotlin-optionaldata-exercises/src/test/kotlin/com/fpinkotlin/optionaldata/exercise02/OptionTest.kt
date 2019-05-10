@@ -4,7 +4,7 @@ import io.kotlintest.properties.forAll
 import io.kotlintest.specs.StringSpec
 import java.util.*
 
-class OptionTest: StringSpec() {
+class OptionTest : StringSpec() {
 
     private val random = Random()
 

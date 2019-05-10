@@ -10,7 +10,7 @@ class FoldTest : StringSpec() {
 
         "string" {
             forAll(CharKListGenerator()) { list: List<Char> ->
-                string(list) == list.toCharArray().fold("") { s, c -> s + c}
+                string(list) == list.toCharArray().fold("") { s, c -> s + c }
             }
         }
     }
@@ -19,7 +19,7 @@ class FoldTest : StringSpec() {
 
         "sum" {
             forAll { list: List<Int> ->
-                sum(list) == list.toIntArray().fold(0) { s, c -> s + c}
+                sum(list) == list.toIntArray().fold(0) { s, c -> s + c }
             }
         }
     }

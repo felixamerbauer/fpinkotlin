@@ -3,9 +3,9 @@ package com.fpinkotlin.handlingerrors.listing02
 import java.io.Serializable
 
 
-sealed class Result<out A>: Serializable {
+sealed class Result<out A> : Serializable {
 
-    internal class Failure<out A>(internal val exception: RuntimeException): Result<A>() {
+    internal class Failure<out A>(internal val exception: RuntimeException) : Result<A>() {
 
         override fun toString(): String = "Failure(${exception.message})"
     }

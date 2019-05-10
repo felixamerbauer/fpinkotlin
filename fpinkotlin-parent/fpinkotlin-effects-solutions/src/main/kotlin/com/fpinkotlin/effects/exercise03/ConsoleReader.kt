@@ -5,7 +5,7 @@ import com.fpinkotlin.common.Result
 import java.io.BufferedReader
 import java.io.InputStreamReader
 
-class ConsoleReader(private val reader: BufferedReader): AbstractReader(reader) {
+class ConsoleReader(private val reader: BufferedReader) : AbstractReader(reader) {
 
     override fun close() {
         reader.close()

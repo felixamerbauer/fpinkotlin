@@ -11,7 +11,7 @@ sealed class Stream<out A> {
 
     abstract fun tail(): Result<Stream<A>>
 
-    private object Empty: Stream<Nothing>() {
+    private object Empty : Stream<Nothing>() {
 
         override fun head(): Result<Nothing> = Result()
 
@@ -21,8 +21,8 @@ sealed class Stream<out A> {
 
     }
 
-    private class Cons<out A> (internal val hd: Lazy<A>,
-                               internal val tl: Lazy<Stream<A>>) : Stream<A>() {
+    private class Cons<out A>(internal val hd: Lazy<A>,
+                              internal val tl: Lazy<Stream<A>>) : Stream<A>() {
 
         override fun head(): Result<A> = Result(hd())
 

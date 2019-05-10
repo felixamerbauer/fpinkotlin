@@ -4,7 +4,7 @@ import com.fpinkotlin.common.Result
 import java.io.Closeable
 
 
-interface Input: Closeable {
+interface Input : Closeable {
 
     fun readString(): Result<Pair<String, Input>>
 

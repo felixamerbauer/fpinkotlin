@@ -19,7 +19,7 @@ sealed class List<A> {
 
     fun reverse(): List<A> = TODO("reverse")
 
-    internal object Nil: List<Nothing>() {
+    internal object Nil : List<Nothing>() {
 
         override fun setHead(a: Nothing): List<Nothing> = throw IllegalStateException("setHead called on an empty list")
 
@@ -28,7 +28,7 @@ sealed class List<A> {
         override fun toString(): String = "[NIL]"
     }
 
-    internal class Cons<A>(val head: A, val tail: List<A>): List<A>() {
+    internal class Cons<A>(val head: A, val tail: List<A>) : List<A>() {
 
         override fun setHead(a: A): List<A> = tail.cons(a)
 
@@ -37,7 +37,7 @@ sealed class List<A> {
         override fun toString(): String = "[${toString("", this)}NIL]"
 
         private tailrec fun toString(acc: String, list: List<A>): String = when (list) {
-            Nil  -> acc
+            Nil -> acc
             is Cons -> toString("$acc${list.head}, ", list.tail)
         }
     }

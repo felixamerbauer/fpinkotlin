@@ -5,13 +5,13 @@ import com.fpinkotlin.generators.IntListGenerator
 import io.kotlintest.properties.forAll
 import io.kotlintest.specs.StringSpec
 
-class TreeTest: StringSpec() {
+class TreeTest : StringSpec() {
 
     init {
 
         "foldLeft" {
             forAll(IntListGenerator()) { (array, list) ->
-                val tree = list.foldLeft(Tree<Int>()) { tree -> { elem ->  tree + elem } }
+                val tree = list.foldLeft(Tree<Int>()) { tree -> { elem -> tree + elem } }
                 val f = { a: Int -> { b: Int -> a + b } }
                 tree.foldLeft(0, f, f) == array.sum()
             }

@@ -9,14 +9,14 @@ import io.kotlintest.properties.forAll
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 
-class HeapTest: StringSpec() {
+class HeapTest : StringSpec() {
 
     init {
 
         "test Plus Ordered Ascending Comparable" {
             val list = range(1, 2_000)
             val heap = list.foldLeft(Heap()) { h: Heap<Int> -> { i -> h + i } }
-            heap.toList().toString() shouldBe(list.toString())
+            heap.toList().toString() shouldBe (list.toString())
             isBalanced(heap) shouldBe true
             isValueOrdered(heap) shouldBe true
             val heap2 = list.foldLeft(heap) { t -> { _ -> t.tail().getOrElse(t) } }
@@ -26,7 +26,7 @@ class HeapTest: StringSpec() {
         "test Plus Ordered Descending Comparable" {
             val list = range(1, 2_000)
             val heap = list.reverse().foldLeft(Heap()) { h: Heap<Int> -> { i -> h + i } }
-            heap.toList().toString() shouldBe(list.toString())
+            heap.toList().toString() shouldBe (list.toString())
             isBalanced(heap) shouldBe true
             isValueOrdered(heap) shouldBe true
             val heap2 = list.foldLeft(heap) { t -> { _ -> t.tail().getOrElse(t) } }
@@ -38,9 +38,9 @@ class HeapTest: StringSpec() {
                 val heap = list.fold(Heap()) { h: Heap<Int>, i -> h + i }
                 val heap2 = list.fold(heap) { t, _ -> t.tail().getOrElse(t) }
                 heap.size == list.size &&
-                    isBalanced(heap) &&
-                    isValueOrdered(heap) &&
-                    heap2.isEmpty
+                        isBalanced(heap) &&
+                        isValueOrdered(heap) &&
+                        heap2.isEmpty
             }
         }
 
@@ -63,7 +63,7 @@ class HeapTest: StringSpec() {
         "test Plus Ordered Ascending Comparator" {
             val list = range(0, 2_000).map { Count(it) }
             val heap = list.foldLeft(Heap(CountComparator)) { h: Heap<Count> -> { i -> h + i } }
-            heap.toList().toString() shouldBe(list.toString())
+            heap.toList().toString() shouldBe (list.toString())
             isBalanced(heap) shouldBe true
             isValueOrdered(heap, CountComparator) shouldBe true
             val heap2 = list.foldLeft(heap) { t -> { _ -> t.tail().getOrElse(t) } }
@@ -73,7 +73,7 @@ class HeapTest: StringSpec() {
         "test Plus Ordered Descending Comparator" {
             val list = range(0, 2_000).map { Count(it) }
             val heap = list.reverse().foldLeft(Heap(CountComparator)) { h: Heap<Count> -> { i -> h + i } }
-            heap.toList().toString() shouldBe(list.toString())
+            heap.toList().toString() shouldBe (list.toString())
             isBalanced(heap) shouldBe true
             isValueOrdered(heap, CountComparator) shouldBe true
             val heap2 = list.foldLeft(heap) { t -> { _ -> t.tail().getOrElse(t) } }
@@ -82,23 +82,23 @@ class HeapTest: StringSpec() {
 
         "plus random Comparator" {
             forAll(Gen.list(Gen.choose(1, 1_000))) { list ->
-                val heap = list.map{ Count(it) }.fold(Heap(CountComparator)) { h: Heap<Count>, i -> h + i }
+                val heap = list.map { Count(it) }.fold(Heap(CountComparator)) { h: Heap<Count>, i -> h + i }
                 val heap2 = list.fold(heap) { t, _ -> t.tail().getOrElse(t) }
                 heap.size == list.size &&
-                    isBalanced(heap) &&
-                    isValueOrdered(heap, CountComparator) &&
-                    heap2.isEmpty
+                        isBalanced(heap) &&
+                        isValueOrdered(heap, CountComparator) &&
+                        heap2.isEmpty
             }
         }
     }
 }
 
-data class Count(val value: Int): Any() {
+data class Count(val value: Int) : Any() {
     operator fun plus(other: Count): Count = Count(this.value + other.value)
     operator fun minus(other: Count): Count = Count(this.value - other.value)
 }
 
-object CountComparator: Comparator<Count> {
+object CountComparator : Comparator<Count> {
 
     override fun compare(o1: Count, o2: Count): Int = o1.value.compareTo(o2.value)
 }
@@ -114,10 +114,14 @@ private fun <A> isBalanced(heap: Heap<A>): Boolean {
 
 private fun <A> isValueOrdered(heap: Heap<A>): Boolean {
     fun <A> isValueOrderedHelper(heap: Heap<A>): Boolean =
-            heap.head.flatMap { t1 -> heap.tail().flatMap { tail -> tail.head.map { t2 ->
-                val comparator = heap.comparator.getOrElse { throw IllegalStateException() }
-                comparator.compare(t1, t2) <= 0
-            } } }.getOrElse(true)
+            heap.head.flatMap { t1 ->
+                heap.tail().flatMap { tail ->
+                    tail.head.map { t2 ->
+                        val comparator = heap.comparator.getOrElse { throw IllegalStateException() }
+                        comparator.compare(t1, t2) <= 0
+                    }
+                }
+            }.getOrElse(true)
     return isValueOrderedHelper(heap) && heap.tail().map { isValueOrderedHelper(it) }.getOrElse(true)
 }
 

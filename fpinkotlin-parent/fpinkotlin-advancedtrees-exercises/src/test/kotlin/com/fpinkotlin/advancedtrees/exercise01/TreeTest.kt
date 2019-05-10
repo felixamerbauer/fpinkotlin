@@ -7,9 +7,10 @@ import io.kotlintest.properties.Gen
 import io.kotlintest.properties.forAll
 import io.kotlintest.specs.StringSpec
 
-class TreeTest: StringSpec() {
+class TreeTest : StringSpec() {
 
     var n = 0
+
     init {
 
         "Plus Ordered Ascending" {

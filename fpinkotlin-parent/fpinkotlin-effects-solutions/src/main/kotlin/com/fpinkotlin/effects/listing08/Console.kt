@@ -33,12 +33,12 @@ object Console {
      * A fun version of readLine
      */
     fun readLine(): IO<String> = IO.Suspend {
-            try {
-                br.readLine()
-            } catch (e: IOException) {
-                throw IllegalStateException(e)
-            }
+        try {
+            br.readLine()
+        } catch (e: IOException) {
+            throw IllegalStateException(e)
         }
+    }
 
     /**
      * A vall version of printLine

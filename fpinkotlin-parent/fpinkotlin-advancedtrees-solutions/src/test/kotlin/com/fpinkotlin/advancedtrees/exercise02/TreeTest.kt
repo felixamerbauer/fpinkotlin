@@ -8,7 +8,7 @@ import io.kotlintest.properties.forAll
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 
-class TreeTest: StringSpec() {
+class TreeTest : StringSpec() {
 
     private val testLimit = 100_000
     private val timeFactor = 500
@@ -50,7 +50,7 @@ class TreeTest: StringSpec() {
         "testAddRemoveRandom" {
             forAll(1, IntListGenerator(0, testLimit)) { (_, list) ->
                 val maxTime = 2L * log2nlz(list.length + 1) * timeFactor
-                val set = list.foldLeft(setOf<Int>()) { s -> { s + it }}
+                val set = list.foldLeft(setOf<Int>()) { s -> { s + it } }
                 val time = System.currentTimeMillis()
                 val tree = list.foldLeft(Tree<Int>()) { t -> { t + it } }
                 val duration = System.currentTimeMillis() - time
@@ -58,10 +58,10 @@ class TreeTest: StringSpec() {
                 val tree2 = range(0, 5000).foldLeft(tree) { t -> { t - it } }
                 val duration2 = System.currentTimeMillis() - time2
                 (duration < maxTime) &&
-                    tree.size == set.size &&
-                    tree.height <= 2 * log2nlz(tree.size + 1) &&
-                    duration2 < maxTime &&
-                    tree2.height <= 2 * log2nlz(tree2.size + 1)
+                        tree.size == set.size &&
+                        tree.height <= 2 * log2nlz(tree.size + 1) &&
+                        duration2 < maxTime &&
+                        tree2.height <= 2 * log2nlz(tree2.size + 1)
             }
         }
     }

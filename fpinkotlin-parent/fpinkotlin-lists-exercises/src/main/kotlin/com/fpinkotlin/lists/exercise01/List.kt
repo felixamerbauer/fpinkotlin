@@ -6,7 +6,7 @@ sealed class List<A> {
 
     fun cons(a: A): List<A> = TODO("cons")
 
-    private object Nil: List<Nothing>() {
+    private object Nil : List<Nothing>() {
 
         override fun isEmpty() = true
 

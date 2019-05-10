@@ -45,7 +45,7 @@ sealed class Heap<out A> {
         return unfold(identity, z)
     }
 
-    internal class Empty<out A>(override val comparator: Result<Comparator<@UnsafeVariance A>> = Result.Empty): Heap<A>() {
+    internal class Empty<out A>(override val comparator: Result<Comparator<@UnsafeVariance A>> = Result.Empty) : Heap<A>() {
 
         override val isEmpty: Boolean = true
 
@@ -72,7 +72,7 @@ sealed class Heap<out A> {
                             private val hd: A,
                             private val rght: Heap<A>,
                             override val comparator: Result<Comparator<@UnsafeVariance A>> =
-                               lft.comparator.orElse { rght.comparator }): Heap<A>()  {
+                                    lft.comparator.orElse { rght.comparator }) : Heap<A>() {
 
         override val isEmpty: Boolean = false
 
@@ -102,23 +102,23 @@ sealed class Heap<out A> {
 
         operator fun <A> invoke(comparator: Result<Comparator<A>>): Heap<A> = TODO("invoke")
 
-        operator fun <A> invoke(element: A, comparator: Result<Comparator<A>>): Heap<A> =TODO("invoke")
+        operator fun <A> invoke(element: A, comparator: Result<Comparator<A>>): Heap<A> = TODO("invoke")
 
-        operator fun <A: Comparable<A>> invoke(element: A): Heap<A> = TODO("invoke")
+        operator fun <A : Comparable<A>> invoke(element: A): Heap<A> = TODO("invoke")
 
         operator fun <A> invoke(element: A, comparator: Comparator<A>): Heap<A> = TODO("invoke")
 
         protected fun <A> merge(head: A, first: Heap<A>, second: Heap<A>): Heap<A> =
-            first.comparator.orElse { second.comparator }.let {
-                when {
-                    first.rank >= second.rank -> H(second.rank + 1, first, head, second, it)
-                    else -> H(first.rank + 1, second, head, first, it)
+                first.comparator.orElse { second.comparator }.let {
+                    when {
+                        first.rank >= second.rank -> H(second.rank + 1, first, head, second, it)
+                        else -> H(first.rank + 1, second, head, first, it)
+                    }
                 }
-            }
 
         fun <A> merge(first: Heap<A>, second: Heap<A>,
                       comparator: Result<Comparator<A>> =
-                      first.comparator.orElse { second.comparator }): Heap<A> = TODO("merge")
+                              first.comparator.orElse { second.comparator }): Heap<A> = TODO("merge")
 
     }
 }

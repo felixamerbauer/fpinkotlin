@@ -1,7 +1,7 @@
 package com.fpinkotlin.workingwithlaziness.exercise03
 
 
-class Lazy<out A>(function: () -> A): () -> A {
+class Lazy<out A>(function: () -> A) : () -> A {
 
     private val value: A by lazy(function)
 
@@ -9,4 +9,4 @@ class Lazy<out A>(function: () -> A): () -> A {
 }
 
 
-val constructMessage: (Lazy<String>) ->  (Lazy<String>) -> Lazy<String> = TODO("Implement this function")
+val constructMessage: (Lazy<String>) -> (Lazy<String>) -> Lazy<String> = TODO("Implement this function")

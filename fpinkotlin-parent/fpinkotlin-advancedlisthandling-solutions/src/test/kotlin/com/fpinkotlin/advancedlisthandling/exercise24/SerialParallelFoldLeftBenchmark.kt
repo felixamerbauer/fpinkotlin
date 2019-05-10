@@ -13,7 +13,7 @@ import java.util.concurrent.Executors
  */
 object SerialParallelFoldLeftBenchmark {
 
-        private val random = Random()
+    private val random = Random()
 
     @JvmStatic
     fun main(args: Array<String>) {
@@ -30,11 +30,11 @@ object SerialParallelFoldLeftBenchmark {
         testSerial(5, testList, System.currentTimeMillis())
         println("Duration serial 1 thread: ${testSerial(10, testList, System.currentTimeMillis())}")
         testParallel(es2, 5, testList, System.currentTimeMillis())
-        println("Duration parallel 2 threads: ${testParallel(es2,10, testList, System.currentTimeMillis())}")
+        println("Duration parallel 2 threads: ${testParallel(es2, 10, testList, System.currentTimeMillis())}")
         testParallel(es4, 5, testList, System.currentTimeMillis())
-        println("Duration parallel 4 threads: ${testParallel(es4,10, testList, System.currentTimeMillis())}")
+        println("Duration parallel 4 threads: ${testParallel(es4, 10, testList, System.currentTimeMillis())}")
         testParallel(es8, 5, testList, System.currentTimeMillis())
-        println("Duration parallel 8 threads: ${testParallel(es8,10, testList, System.currentTimeMillis())}")
+        println("Duration parallel 8 threads: ${testParallel(es8, 10, testList, System.currentTimeMillis())}")
         es2.shutdown()
         es4.shutdown()
         es8.shutdown()
@@ -56,8 +56,8 @@ object SerialParallelFoldLeftBenchmark {
 
     private fun fibo(x: Long): Long {
         return when (x) {
-            0L   -> 0
-            1L   -> 1
+            0L -> 0
+            1L -> 1
             else -> fibo(x - 1) + fibo(x - 2)
         }
     }

@@ -4,7 +4,7 @@ import com.fpinkotlin.workingwithlaziness.exercise04.Lazy.Companion.lift2
 import io.kotlintest.properties.forAll
 import io.kotlintest.specs.StringSpec
 
-class LazyTest: StringSpec() {
+class LazyTest : StringSpec() {
 
     init {
 
@@ -38,20 +38,20 @@ class LazyTest: StringSpec() {
                 val result2 = if (condition) message1() else defaultMessage()
                 val result3 = if (condition) message2() else defaultMessage()
                 (!condition && result1 == "No greetings when time is odd" &&
-                    result2 == result1 &&
-                    result3 == result1 &&
-                    greetingsCalls == 0 &&
-                    name1Calls == 0 &&
-                    name2Calls == 0 &&
-                    defaultMessageCalls == 1) ||
-                    (condition &&
-                        result1 == "Hello, Mickey!" &&
                         result2 == result1 &&
-                        result3 == "Hello, Donald!" &&
-                        greetingsCalls == 1 &&
-                        name1Calls == 1 &&
-                        name2Calls == 1 &&
-                        defaultMessageCalls == 0)
+                        result3 == result1 &&
+                        greetingsCalls == 0 &&
+                        name1Calls == 0 &&
+                        name2Calls == 0 &&
+                        defaultMessageCalls == 1) ||
+                        (condition &&
+                                result1 == "Hello, Mickey!" &&
+                                result2 == result1 &&
+                                result3 == "Hello, Donald!" &&
+                                greetingsCalls == 1 &&
+                                name1Calls == 1 &&
+                                name2Calls == 1 &&
+                                defaultMessageCalls == 0)
             }
 
         }

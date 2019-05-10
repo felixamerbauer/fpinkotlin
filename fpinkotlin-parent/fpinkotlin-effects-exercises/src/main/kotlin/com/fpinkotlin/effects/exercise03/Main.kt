@@ -8,7 +8,7 @@ fun readPersonsFromScript(vararg commands: String): List<Person> = Stream.unfold
 
 fun readPersonsFromConsole(): List<Person> = Stream.unfold(ConsoleReader(), ::person).toList()
 
-fun readPersonsFromFile(path: String): Result<List<Person>>  = TODO("readPersonsFromFile")
+fun readPersonsFromFile(path: String): Result<List<Person>> = TODO("readPersonsFromFile")
 
 fun main(args: Array<String>) {
     val path = "/replace/with/valid/path/data.txt"

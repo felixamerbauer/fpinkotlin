@@ -4,11 +4,11 @@ sealed class List<A> {
 
     abstract fun isEmpty(): Boolean
 
-    fun cons(a: A): List<A>  = Cons(a, this)
+    fun cons(a: A): List<A> = Cons(a, this)
 
     fun setHead(a: A): List<A> = TODO("setHead")
 
-    private object Nil: List<Nothing>() {
+    private object Nil : List<Nothing>() {
 
         override fun isEmpty() = true
 

@@ -27,9 +27,9 @@ class Manager(id: String, list: List<Int>,
                         this.client.tell(Result(result))
                     } else {
                         manager.context
-                            .become(Behavior(behavior.workList
-                                                 .tailSafe()
-                                                 .getOrElse(List()), result))
+                                .become(Behavior(behavior.workList
+                                        .tailSafe()
+                                        .getOrElse(List()), result))
                     }
                 }
             }
@@ -39,12 +39,12 @@ class Manager(id: String, list: List<Int>,
     fun start() {
         onReceive(0, self())
         sequence(initial.map { this.initWorker(it) })
-            .forEach(onSuccess = { this.initWorkers(it) },
-                     onFailure = { this.tellClientEmptyResult(it.message ?: "Unknown error") })
+                .forEach(onSuccess = { this.initWorkers(it) },
+                        onFailure = { this.tellClientEmptyResult(it.message ?: "Unknown error") })
     }
 
     private fun initWorker(t: Pair<Int, Int>): Result<() -> Unit> =
-        Result(a = { Worker("Worker " + t.second).tell(t.first, self()) })
+            Result(a = { Worker("Worker " + t.second).tell(t.first, self()) })
 
     private fun initWorkers(lst: List<() -> Unit>) {
         lst.forEach { it() }
@@ -59,8 +59,8 @@ class Manager(id: String, list: List<Int>,
     }
 
     internal inner class Behavior
-        internal constructor(internal val workList: List<Int>,
-                             internal val resultList: List<Int>) : MessageProcessor<Int> {
+    internal constructor(internal val workList: List<Int>,
+                         internal val resultList: List<Int>) : MessageProcessor<Int> {
 
         override fun process(message: Int, sender: Result<Actor<Int>>) {
             managerFunction(this@Manager)(this@Behavior)(message)

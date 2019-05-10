@@ -6,7 +6,7 @@ tailrec fun add(a: Int, b: Int): Int = if (b == 0) a else add(inc(a), dec(b))
 fun add_(a: Int, b: Int): Int {
     var x = a
     var y = b
-    while(y != 0) {
+    while (y != 0) {
         x = inc(x)
         y = dec(y)
     }

@@ -10,7 +10,7 @@ class FibonacciTest : StringSpec() {
 
         "fibonacci" {
             forAll(100, Gen.choose(3, 30_000)) { n ->
-                fib(n) == fib(n - 1) + fib (n - 2)
+                fib(n) == fib(n - 1) + fib(n - 2)
             }
         }
     }

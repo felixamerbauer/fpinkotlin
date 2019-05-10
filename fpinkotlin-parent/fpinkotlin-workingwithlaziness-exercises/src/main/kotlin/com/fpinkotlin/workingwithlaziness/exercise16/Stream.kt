@@ -18,7 +18,7 @@ sealed class Stream<out A> {
 
     fun dropAtMost(n: Int): Stream<A> = dropAtMost(n, this)
 
-    private object Empty: Stream<Nothing>() {
+    private object Empty : Stream<Nothing>() {
 
         override fun takeAtMost(n: Int): Stream<Nothing> = this
 
@@ -30,8 +30,8 @@ sealed class Stream<out A> {
 
     }
 
-    private class Cons<out A> (internal val hd: Lazy<A>,
-                               internal val tl: Lazy<Stream<A>>) : Stream<A>() {
+    private class Cons<out A>(internal val hd: Lazy<A>,
+                              internal val tl: Lazy<Stream<A>>) : Stream<A>() {
 
         override fun takeAtMost(n: Int): Stream<A> = when {
             n > 0 -> cons(hd, Lazy { tl().takeAtMost(n - 1) })
@@ -55,7 +55,7 @@ sealed class Stream<out A> {
 
         fun <A> repeat(f: () -> A): Stream<A> = cons(Lazy { f() }, Lazy { repeat(f) })
 
-        tailrec fun <A> dropAtMost(n: Int, stream: Stream<A>): Stream<A> =  when {
+        tailrec fun <A> dropAtMost(n: Int, stream: Stream<A>): Stream<A> = when {
             n > 0 -> when (stream) {
                 Empty -> stream
                 is Cons -> dropAtMost(n - 1, stream.tl())
@@ -63,8 +63,8 @@ sealed class Stream<out A> {
             else -> stream
         }
 
-        fun <A> toList(stream: Stream<A>) : List<A> {
-            tailrec fun <A> toList(list: List<A>, stream: Stream<A>) : List<A> = when (stream) {
+        fun <A> toList(stream: Stream<A>): List<A> {
+            tailrec fun <A> toList(list: List<A>, stream: Stream<A>): List<A> = when (stream) {
                 Empty -> list
                 is Cons -> toList(list.cons(stream.hd()), stream.tl())
             }

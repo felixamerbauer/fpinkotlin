@@ -4,7 +4,7 @@ import io.kotlintest.properties.Gen
 import io.kotlintest.properties.forAll
 import io.kotlintest.specs.StringSpec
 
-class OptionTest: StringSpec() {
+class OptionTest : StringSpec() {
 
     init {
 

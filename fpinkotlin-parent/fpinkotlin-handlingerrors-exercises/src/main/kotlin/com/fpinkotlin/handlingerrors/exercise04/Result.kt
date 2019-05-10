@@ -3,11 +3,11 @@ package com.fpinkotlin.handlingerrors.exercise04
 import java.io.Serializable
 
 
-sealed class Result<out A>: Serializable {
+sealed class Result<out A> : Serializable {
 
     abstract fun <B> map(f: (A) -> B): Result<B>
 
-    abstract fun <B> flatMap(f: (A) ->  Result<B>): Result<B>
+    abstract fun <B> flatMap(f: (A) -> Result<B>): Result<B>
 
     fun getOrElse(defaultValue: @UnsafeVariance A): A = TODO("getOrElse")
 
@@ -15,7 +15,7 @@ sealed class Result<out A>: Serializable {
 
     fun orElse(defaultValue: () -> Result<@UnsafeVariance A>): Result<A> = TODO("orElse")
 
-    internal class Failure<out A>(private val exception: RuntimeException): Result<A>() {
+    internal class Failure<out A>(private val exception: RuntimeException) : Result<A>() {
 
         override fun <B> map(f: (A) -> B): Result<B> = TODO("map")
 

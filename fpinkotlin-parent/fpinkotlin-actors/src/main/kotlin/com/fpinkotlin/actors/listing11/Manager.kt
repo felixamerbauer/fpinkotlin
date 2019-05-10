@@ -28,9 +28,9 @@ class Manager(id: String, list: List<Int>,
                         this.client.tell(Result(result.toList().map { it.first }))
                     } else {
                         manager.context
-                            .become(Behavior(behavior.workList
-                                                 .tailSafe()
-                                                 .getOrElse(List()), result))
+                                .become(Behavior(behavior.workList
+                                        .tailSafe()
+                                        .getOrElse(List()), result))
                     }
                 }
             }
@@ -40,12 +40,12 @@ class Manager(id: String, list: List<Int>,
     fun start() {
         onReceive(Pair(0, 0), self())
         sequence(initial.map { this.initWorker(it) })
-            .forEach({ this.initWorkers(it) },
-                     { this.tellClientEmptyResult(it.message ?: "Unknown error") })
+                .forEach({ this.initWorkers(it) },
+                        { this.tellClientEmptyResult(it.message ?: "Unknown error") })
     }
 
     private fun initWorker(t: Pair<Int, Int>): Result<() -> Unit> =
-        Result(a = { Worker("Worker " + t.second).tell(Pair(t.first, t.second), self()) })
+            Result(a = { Worker("Worker " + t.second).tell(Pair(t.first, t.second), self()) })
 
     private fun initWorkers(lst: List<() -> Unit>) {
         lst.forEach { it() }
@@ -60,9 +60,9 @@ class Manager(id: String, list: List<Int>,
     }
 
     internal inner class Behavior
-        internal constructor(internal val workList: List<Pair<Int, Int>>,
-                             internal val resultHeap: Heap<Pair<Int, Int>>) :
-                                                    MessageProcessor<Pair<Int, Int>> {
+    internal constructor(internal val workList: List<Pair<Int, Int>>,
+                         internal val resultHeap: Heap<Pair<Int, Int>>) :
+            MessageProcessor<Pair<Int, Int>> {
 
         override fun process(message: Pair<Int, Int>,
                              sender: Result<Actor<Pair<Int, Int>>>) {

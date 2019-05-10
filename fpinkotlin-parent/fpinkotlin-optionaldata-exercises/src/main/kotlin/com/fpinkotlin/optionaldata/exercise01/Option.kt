@@ -7,7 +7,7 @@ sealed class Option<out A> {
 
     fun getOrElse(default: @UnsafeVariance A): A = TODO("Implement this function")
 
-    internal object None: Option<Nothing>() {
+    internal object None : Option<Nothing>() {
 
         override fun isEmpty() = true
 

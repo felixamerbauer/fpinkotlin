@@ -24,7 +24,7 @@ sealed class Option<out A> {
         is Some -> value
     }
 
-    internal object None: Option<Nothing>() {
+    internal object None : Option<Nothing>() {
 
         override fun <B> map(f: (Nothing) -> B): Option<B> = None
 
@@ -79,16 +79,16 @@ val variance: (List<Double>) -> Option<Double> = { list ->
 }
 
 fun mean(list: List<Double>): Option<Double> =
-    when {
-        list.isEmpty() -> Option()
-        else -> Option(list.sum() / list.size)
-    }
+        when {
+            list.isEmpty() -> Option()
+            else -> Option(list.sum() / list.size)
+        }
 
 
 fun variance(list: List<Double>): Option<Double> =
-    mean(list).flatMap { m ->
-        mean(list.map { x ->
-            Math.pow((x - m), 2.0)
-        })
-    }
+        mean(list).flatMap { m ->
+            mean(list.map { x ->
+                Math.pow((x - m), 2.0)
+            })
+        }
 

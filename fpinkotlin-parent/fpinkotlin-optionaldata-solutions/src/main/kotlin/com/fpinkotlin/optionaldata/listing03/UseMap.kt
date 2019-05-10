@@ -4,10 +4,9 @@ import com.fpinkotlin.optionaldata.exercise06.Option
 import java.io.IOException
 
 
-
-data class Toon (val firstName: String,
-                 val lastName: String,
-                 val email: Option<String> = Option()) {
+data class Toon(val firstName: String,
+                val lastName: String,
+                val email: Option<String> = Option()) {
 
     companion object {
         operator fun invoke(firstName: String,
@@ -21,7 +20,7 @@ fun <K, V> Map<K, V>.getOption(key: K) = Option(this[key])
 
 fun main(args: Array<String>) {
 
-    val toons: Map<String, Toon>  = mapOf(
+    val toons: Map<String, Toon> = mapOf(
             "Mickey" to Toon("Mickey", "Mouse", "mickey@disney.com"),
             "Minnie" to Toon("Minnie", "Mouse"),
             "Donald" to Toon("Donald", "Duck", "donald@disney.com"))
@@ -38,7 +37,7 @@ fun main(args: Array<String>) {
             .flatMap(toons::getOption)
             .flatMap(Toon::email)
 
-    println(toon.getOrElse{"No data"})
+    println(toon.getOrElse { "No data" })
 
 }
 

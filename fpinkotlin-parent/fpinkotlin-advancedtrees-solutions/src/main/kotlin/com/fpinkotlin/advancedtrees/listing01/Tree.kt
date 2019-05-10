@@ -5,7 +5,7 @@ import com.fpinkotlin.advancedtrees.listing01.Tree.Color.B
 import com.fpinkotlin.advancedtrees.listing01.Tree.Color.R
 import kotlin.math.max
 
-sealed class Tree<out A: Comparable<@UnsafeVariance A>> {
+sealed class Tree<out A : Comparable<@UnsafeVariance A>> {
 
     abstract val size: Int
 
@@ -23,7 +23,7 @@ sealed class Tree<out A: Comparable<@UnsafeVariance A>> {
 
     internal abstract val value: A
 
-    internal abstract class Empty<out A: Comparable<@UnsafeVariance A>>: Tree<A>() { // <3> Empty is an abstract class, which will
+    internal abstract class Empty<out A : Comparable<@UnsafeVariance A>> : Tree<A>() { // <3> Empty is an abstract class, which will
         // allow
         // implementing functions in in this class instead of using pattern matching in the Tree parent class
 
@@ -31,7 +31,8 @@ sealed class Tree<out A: Comparable<@UnsafeVariance A>> {
 
         override val isTR: Boolean = false
 
-        override val right: Tree<Nothing> by lazy { // <4> Properties that make no sense in the Empty class are lazily initialised.
+        override val right: Tree<Nothing> by lazy {
+            // <4> Properties that make no sense in the Empty class are lazily initialised.
             throw IllegalStateException("right called on Empty tree")
         }
 
@@ -52,12 +53,12 @@ sealed class Tree<out A: Comparable<@UnsafeVariance A>> {
         override fun toString(): String = "E"
     }
 
-    internal object E: Empty<Nothing>() // <5> The empty tree is represented by the E singleton
+    internal object E : Empty<Nothing>() // <5> The empty tree is represented by the E singleton
 
-    internal class T<out A: Comparable<@UnsafeVariance A>>(override val color: Color,
-                                                           override val left: Tree<A>,
-                                                           override val value: A,
-                                                           override val right: Tree<A>) : Tree<A>() {
+    internal class T<out A : Comparable<@UnsafeVariance A>>(override val color: Color,
+                                                            override val left: Tree<A>,
+                                                            override val value: A,
+                                                            override val right: Tree<A>) : Tree<A>() {
         override val isTB: Boolean = color == B
 
         override val isTR: Boolean = color == R
@@ -71,19 +72,19 @@ sealed class Tree<out A: Comparable<@UnsafeVariance A>> {
 
     companion object {
 
-        operator fun <A: Comparable<A>> invoke(): Tree<A> = E
+        operator fun <A : Comparable<A>> invoke(): Tree<A> = E
 
     }
 
     sealed class Color { // <5> These are the colors used for coloring the nodes
 
         // Red
-        internal object R: Color() {
+        internal object R : Color() {
             override fun toString(): String = "R"
         }
 
         // Black
-        internal object B: Color() {
+        internal object B : Color() {
             override fun toString(): String = "B"
         }
     }

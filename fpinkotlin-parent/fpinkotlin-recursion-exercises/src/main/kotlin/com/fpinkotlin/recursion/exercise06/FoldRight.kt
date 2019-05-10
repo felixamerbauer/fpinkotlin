@@ -14,6 +14,6 @@ fun <T> List<T>.tail(): List<T> =
         else
             this.subList(1, this.size)
 
-fun sum(list: List<Int>): Int = foldRight(list, 0) { a, b -> a + b}
+fun sum(list: List<Int>): Int = foldRight(list, 0) { a, b -> a + b }
 
-fun string(list: List<Char>): String = foldRight(list, "") { a, b -> a + b}
+fun string(list: List<Char>): String = foldRight(list, "") { a, b -> a + b }

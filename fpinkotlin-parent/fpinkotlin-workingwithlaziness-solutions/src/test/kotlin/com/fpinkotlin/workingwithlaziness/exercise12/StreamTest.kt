@@ -3,7 +3,7 @@ package com.fpinkotlin.workingwithlaziness.exercise12
 import io.kotlintest.properties.forAll
 import io.kotlintest.specs.StringSpec
 
-class StreamTest: StringSpec() {
+class StreamTest : StringSpec() {
 
     init {
 

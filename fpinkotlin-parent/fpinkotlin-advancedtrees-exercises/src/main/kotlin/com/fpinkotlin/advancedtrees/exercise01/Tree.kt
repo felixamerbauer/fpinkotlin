@@ -7,7 +7,7 @@ import kotlin.math.max
 /*
  * see http://www.cs.cmu.edu/~rwh/theses/okasaki.pdf
  */
-sealed class Tree<out A: Comparable<@UnsafeVariance A>> {
+sealed class Tree<out A : Comparable<@UnsafeVariance A>> {
 
     abstract val size: Int
 
@@ -36,7 +36,7 @@ sealed class Tree<out A: Comparable<@UnsafeVariance A>> {
                           value: @UnsafeVariance A,
                           right: Tree<@UnsafeVariance A>): Tree<A> = TODO("balance")
 
-    internal abstract class Empty<out A: Comparable<@UnsafeVariance A>>: Tree<A>() {
+    internal abstract class Empty<out A : Comparable<@UnsafeVariance A>> : Tree<A>() {
 
         override val isTB: Boolean = false
 
@@ -61,12 +61,12 @@ sealed class Tree<out A: Comparable<@UnsafeVariance A>> {
         override fun toString(): String = "E"
     }
 
-    internal object E: Empty<Nothing>()
+    internal object E : Empty<Nothing>()
 
-    internal class T<out A: Comparable<@UnsafeVariance A>>(override val color: Color,
-                                                           override val left: Tree<A>,
-                                                           override val value: A,
-                                                           override val right: Tree<A>) : Tree<A>() {
+    internal class T<out A : Comparable<@UnsafeVariance A>>(override val color: Color,
+                                                            override val left: Tree<A>,
+                                                            override val value: A,
+                                                            override val right: Tree<A>) : Tree<A>() {
         override val isTB: Boolean = color == B
 
         override val isTR: Boolean = color == R
@@ -84,19 +84,19 @@ sealed class Tree<out A: Comparable<@UnsafeVariance A>> {
 
     companion object {
 
-        operator fun <A: Comparable<A>> invoke(): Tree<A> = E
+        operator fun <A : Comparable<A>> invoke(): Tree<A> = E
 
     }
 
     sealed class Color {
 
         // Red
-        internal object R: Color() {
+        internal object R : Color() {
             override fun toString(): String = "R"
         }
 
         // Black
-        internal object B: Color() {
+        internal object B : Color() {
             override fun toString(): String = "B"
         }
     }

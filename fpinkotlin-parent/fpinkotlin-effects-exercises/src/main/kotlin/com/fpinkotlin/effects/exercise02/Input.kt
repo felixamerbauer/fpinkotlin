@@ -3,7 +3,7 @@ package com.fpinkotlin.effects.exercise02
 import com.fpinkotlin.common.Result
 
 
-interface Input: AutoCloseable {
+interface Input : AutoCloseable {
 
     fun readString(): Result<Pair<String, Input>>
 

@@ -2,7 +2,7 @@ package com.fpinkotlin.trees.exercise03
 
 import com.fpinkotlin.common.List
 
-sealed class Tree<out A: Comparable<@UnsafeVariance A>> {
+sealed class Tree<out A : Comparable<@UnsafeVariance A>> {
 
     abstract fun isEmpty(): Boolean
 
@@ -24,9 +24,9 @@ sealed class Tree<out A: Comparable<@UnsafeVariance A>> {
         override fun toString(): String = "E"
     }
 
-    internal class T<out A: Comparable<@UnsafeVariance A>>(internal val left: Tree<A>,
-                                                           internal val value: A,
-                                                           internal val right: Tree<A>) : Tree<A>() {
+    internal class T<out A : Comparable<@UnsafeVariance A>>(internal val left: Tree<A>,
+                                                            internal val value: A,
+                                                            internal val right: Tree<A>) : Tree<A>() {
 
         override fun isEmpty(): Boolean = false
 
@@ -35,13 +35,13 @@ sealed class Tree<out A: Comparable<@UnsafeVariance A>> {
 
     companion object {
 
-        operator fun <A: Comparable<A>> invoke(): Tree<A> = Empty
+        operator fun <A : Comparable<A>> invoke(): Tree<A> = Empty
 
-        operator fun <A: Comparable<A>> invoke(vararg az: A): Tree<A> =
-            az.fold(Empty) { tree: Tree<A>, a: A -> tree.plus(a) }
+        operator fun <A : Comparable<A>> invoke(vararg az: A): Tree<A> =
+                az.fold(Empty) { tree: Tree<A>, a: A -> tree.plus(a) }
 
-        operator fun <A: Comparable<A>> invoke(list: List<A>): Tree<A> =
-            list.foldLeft(Empty as Tree<A>) { tree: Tree<A> -> { a: A -> tree.plus(a) } }
+        operator fun <A : Comparable<A>> invoke(list: List<A>): Tree<A> =
+                list.foldLeft(Empty as Tree<A>) { tree: Tree<A> -> { a: A -> tree.plus(a) } }
     }
 }
 
@@ -63,18 +63,18 @@ fun main(args: Array<String>) {
     println(Integer(5) < Number(2))
 }
 
-open class Parent(val value: Int): Comparable<Parent> {
+open class Parent(val value: Int) : Comparable<Parent> {
     override fun compareTo(other: Parent): Int = value.compareTo(other.value)
     override fun toString() = value.toString()
 }
 
-open class Clazz(value: Int): Parent(value)
+open class Clazz(value: Int) : Parent(value)
 
-class Child(value: Int): Clazz(value)
+class Child(value: Int) : Clazz(value)
 
-open class Number(val value: Int): Comparable<Number> {
+open class Number(val value: Int) : Comparable<Number> {
     override fun compareTo(other: Number): Int = value.compareTo(other.value)
     override fun toString() = value.toString()
 }
 
-class Integer(value: Int): Number(value)
+class Integer(value: Int) : Number(value)

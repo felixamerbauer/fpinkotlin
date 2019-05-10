@@ -3,7 +3,7 @@ package com.fpinkotlin.trees.exercise06
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 
-class TreeTest: StringSpec() {
+class TreeTest : StringSpec() {
 
     init {
 

@@ -6,13 +6,13 @@ import io.kotlintest.properties.forAll
 import io.kotlintest.shouldBe
 import io.kotlintest.specs.StringSpec
 
-class TreeTest: StringSpec() {
+class TreeTest : StringSpec() {
 
     init {
 
         "balanceRandom" {
-            forAll { list:List<Int> ->
-                val tree = list.fold(Tree<Int>()) { tree , elem ->  tree + elem }
+            forAll { list: List<Int> ->
+                val tree = list.fold(Tree<Int>()) { tree, elem -> tree + elem }
                 val result = Tree.balance(tree)
                 result.size == tree.size && result.height <= log2nlz(result.size)
             }

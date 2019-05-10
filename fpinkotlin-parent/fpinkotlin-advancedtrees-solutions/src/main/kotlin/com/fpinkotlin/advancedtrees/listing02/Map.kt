@@ -2,7 +2,7 @@ package com.fpinkotlin.advancedtrees.listing02
 
 import com.fpinkotlin.advancedtrees.common.Result
 
-class Map<out K: Comparable<@UnsafeVariance K>, V> {
+class Map<out K : Comparable<@UnsafeVariance K>, V> {
 
     operator fun plus(entry: Pair<@UnsafeVariance K, V>): Map<K, V> = TODO()
 

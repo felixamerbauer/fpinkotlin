@@ -6,7 +6,7 @@ import io.kotlintest.properties.generateInfiniteSequence
 import io.kotlintest.specs.StringSpec
 
 
-class DonutShopTest: StringSpec() {
+class DonutShopTest : StringSpec() {
 
     init {
 

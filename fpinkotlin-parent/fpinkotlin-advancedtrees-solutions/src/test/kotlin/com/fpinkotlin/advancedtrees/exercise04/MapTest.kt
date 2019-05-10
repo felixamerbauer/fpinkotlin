@@ -1,11 +1,11 @@
 package com.fpinkotlin.advancedtrees.exercise04
 
 
-import io.kotlintest.properties.forAll
 import io.kotlintest.properties.Gen
+import io.kotlintest.properties.forAll
 import io.kotlintest.specs.StringSpec
 
-class MapTest: StringSpec() {
+class MapTest : StringSpec() {
 
     private val timeFactor = 500
 
@@ -14,7 +14,7 @@ class MapTest: StringSpec() {
         "testAddRemoveRandom" {
             forAll(Gen.list(Gen.choose(1, 1000))) { list ->
                 val maxTime = 2L * log2nlz(list.size + 1) * timeFactor
-                val set = list.fold(setOf<Int>()) { s, t ->  s + t }
+                val set = list.fold(setOf<Int>()) { s, t -> s + t }
                 val time = System.currentTimeMillis()
                 val map = list.fold(Map<Int, String>()) { m, n ->
                     m + Pair(n, NumbersToEnglish.convertUS(n))
@@ -27,12 +27,12 @@ class MapTest: StringSpec() {
                     map[i].map { p -> p.second == NumbersToEnglish.convertUS(i) }
                 }
                 (list.isEmpty() || duration < maxTime) &&
-                    result.all { it.map { true }.getOrElse(false) } &&
-                    (list.isEmpty() || duration2 < maxTime) &&
-                    map2.isEmpty()
+                        result.all { it.map { true }.getOrElse(false) } &&
+                        (list.isEmpty() || duration2 < maxTime) &&
+                        map2.isEmpty()
             }
         }
-     }
+    }
 
     private fun log2nlz(n: Int): Int = when (n) {
         0 -> 0

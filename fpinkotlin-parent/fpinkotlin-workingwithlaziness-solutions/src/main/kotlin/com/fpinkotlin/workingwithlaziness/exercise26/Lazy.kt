@@ -4,7 +4,7 @@ import com.fpinkotlin.common.List
 import com.fpinkotlin.common.Result
 import com.fpinkotlin.common.sequence
 
-class Lazy<out A>(function: () -> A): () -> A {
+class Lazy<out A>(function: () -> A) : () -> A {
 
     private val value: A by lazy(function)
 
@@ -33,7 +33,7 @@ class Lazy<out A>(function: () -> A): () -> A {
                 ifFalse(value)
 }
 
-fun <A, B, C> lift2(f: (A) -> (B) -> C): (Lazy<A>) ->  (Lazy<B>) -> Lazy<C> =
+fun <A, B, C> lift2(f: (A) -> (B) -> C): (Lazy<A>) -> (Lazy<B>) -> Lazy<C> =
         { ls1 ->
             { ls2 ->
                 Lazy { f(ls1())(ls2()) }

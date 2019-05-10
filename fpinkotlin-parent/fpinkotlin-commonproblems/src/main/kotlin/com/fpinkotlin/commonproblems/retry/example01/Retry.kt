@@ -15,24 +15,24 @@ fun <A, B> retry(f: (A) -> B, times: Int, delay: Long = 10): (A) -> Result<B> {
                     }
                 }
             }
-    return { a -> retry(a, Result.of { f(a) }, Result(), times - 1)}
+    return { a -> retry(a, Result.of { f(a) }, Result(), times - 1) }
 }
 
 fun show(message: String) =
-    Random().nextInt(10).let {
-        when {
-            it < 8 -> throw IllegalStateException("Failure !!!")
-            else -> println(message)
+        Random().nextInt(10).let {
+            when {
+                it < 8 -> throw IllegalStateException("Failure !!!")
+                else -> println(message)
+            }
         }
-    }
 
 fun get(path: String): String =
-    Random().nextInt(10).let {
-        when {
-            it < 8 -> throw IllegalStateException("Error accessing file $path")
-            else -> "content of $path"
+        Random().nextInt(10).let {
+            when {
+                it < 8 -> throw IllegalStateException("Error accessing file $path")
+                else -> "content of $path"
+            }
         }
-    }
 
 fun main(args: Array<String>) {
 

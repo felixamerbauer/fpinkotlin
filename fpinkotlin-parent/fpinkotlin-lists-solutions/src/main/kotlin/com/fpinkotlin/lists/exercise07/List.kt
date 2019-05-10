@@ -30,7 +30,7 @@ sealed class List<out A> {
         return reverse2(List.invoke(), this)
     }
 
-    internal object Nil: List<Nothing>() {
+    internal object Nil : List<Nothing>() {
 
         override fun init(): List<Nothing> = throw IllegalStateException("init called on an empty list")
 
@@ -39,7 +39,7 @@ sealed class List<out A> {
         override fun toString(): String = "[NIL]"
     }
 
-    internal class Cons<out A>(internal val head: A, internal val tail: List<A>): List<A>() {
+    internal class Cons<out A>(internal val head: A, internal val tail: List<A>) : List<A>() {
 
         override fun init(): List<A> = reverse().drop(1).reverse()
 
@@ -48,7 +48,7 @@ sealed class List<out A> {
         override fun toString(): String = "[${toString("", this)}NIL]"
 
         private tailrec fun toString(acc: String, list: List<A>): String = when (list) {
-            Nil  -> acc
+            Nil -> acc
             is Cons -> toString("$acc${list.head}, ", list.tail)
         }
     }
@@ -88,6 +88,6 @@ fun sum(ints: List<Int>): Int = when (ints) {
 }
 
 fun product(ints: List<Double>): Double = when (ints) {
-    List.Nil  -> 1.0
+    List.Nil -> 1.0
     is List.Cons -> ints.head * product(ints.tail)
 }

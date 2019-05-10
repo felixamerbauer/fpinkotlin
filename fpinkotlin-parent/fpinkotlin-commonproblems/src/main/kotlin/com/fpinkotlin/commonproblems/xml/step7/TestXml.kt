@@ -20,9 +20,9 @@ fun main(args: Array<String>) {
             List("firstName", "lastName", "email", "salary")
 
     val program = readXmlFile(::getXmlFilePath,
-                              ::getRootElementName,
-                              processElement(elementNames)(format),
-                              ::processList)
+            ::getRootElementName,
+            processElement(elementNames)(format),
+            ::processList)
     try {
         program()
     } catch (e: Exception) {

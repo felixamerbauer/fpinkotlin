@@ -6,7 +6,7 @@ import io.kotlintest.properties.forAll
 import io.kotlintest.specs.StringSpec
 
 
-class ListTest: StringSpec() {
+class ListTest : StringSpec() {
 
     init {
 
@@ -20,7 +20,7 @@ class ListTest: StringSpec() {
 
 fun main(args: Array<String>) {
     val testLimit = 35000
-    val array = Array(testLimit) {i -> i.toLong() }
+    val array = Array(testLimit) { i -> i.toLong() }
     val testList: List<Long> = List(*array)
     val start = System.currentTimeMillis()
     testList.map { it * 2 }

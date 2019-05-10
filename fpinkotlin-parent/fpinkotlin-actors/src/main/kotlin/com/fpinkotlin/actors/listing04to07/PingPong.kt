@@ -7,8 +7,8 @@ import java.util.concurrent.Semaphore
 
 
 private class Player(id: String,
-             private val sound: String,
-             private val referee: Actor<Int>) : AbstractActor<Int>(id) {
+                     private val sound: String,
+                     private val referee: Actor<Int>) : AbstractActor<Int>(id) {
 
     override fun onReceive(message: Int, sender: Result<Actor<Int>>) {
         println("$sound - $message")
@@ -16,8 +16,8 @@ private class Player(id: String,
             referee.tell(message, sender)
         } else {
             sender.forEach(
-                { actor: Actor<Int> -> actor.tell(message + 1, self())},
-                { referee.tell(message, sender) }
+                    { actor: Actor<Int> -> actor.tell(message + 1, self()) },
+                    { referee.tell(message, sender) }
             )
         }
     }
@@ -33,9 +33,9 @@ fun player(id: String,
             referee.tell(message, sender)
         } else {
             sender.forEach(
-                { actor: Actor<Int> -> actor.tell(message + 1, self())},
-                { referee.tell(message, sender) }
-                          )
+                    { actor: Actor<Int> -> actor.tell(message + 1, self()) },
+                    { referee.tell(message, sender) }
+            )
         }
     }
 }
